@@ -1,0 +1,178 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+/*CONTENIDO DEL TEXTO TRANSPARENTE*/
+/*.carousel-caption {
+	background-color: rgba(0,0,0,0.5);
+	margin-top: 0;
+	
+}
+
+@media only screen and (max-width:750px){
+	.carousel-caption {
+	display: none;
+	background-color: transparent;
+}
+
+}*/
+	
+.navbar-default{
+	background-color: #C3B091;
+	font: bold;
+	border: 0px;
+	margin-bottom: 0px;
+	border-radius: 0px;
+}  
+
+.navbar{
+	border-radius: 0px;
+
+}
+
+.navbar-default .navbar-nav > li > a{
+	color: #fff;
+	font: bold;
+
+}  
+
+.banner img {
+    width: 80%;
+    height: auto;
+    max-height: 600px;  /* Ajusta según tu necesidad */
+}
+
+#carousel1 .carousel-inner .item img {
+	width: 100%;
+	height: 800px; /* Ajusta la altura de las imágenes */
+	object-fit: cover; /* Esto asegura que la imagen se recorte y no se distorsione */
+  }
+
+.navbar-default .navbar-nav > li > a:hover {
+	color: #BF5E0A;
+
+}  
+
+.navbar-default .navbar-brand {
+	color: #FFF;
+
+}
+
+.navbar-default .navbar-brand:hover {
+	color: #FFF;
+}
+
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+    color: #248A88;
+    background-color: rgba(0, 0, 0, .075);
+}
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > a:hover {
+	color: #BF5E0A;
+
+} 
+
+/*Pie de página 1*/
+.pie01{
+	color: #FFF;
+	background-color: #228B22;
+	margin-top: 60px;
+}
+
+.pie01 a{
+	color: #FFF;
+}
+
+.pie01 a:hover{
+	color: #000;
+}
+
+/*Pie de página 2*/
+.pie02{ 
+	color: #FFF;
+	background-color: rgba(0,0,0,1.00);
+	padding: 15px;
+	padding-bottom: 15px;
+	
+}
+
+.menu-fixed{
+	position: fixed;
+	z-index: 1000;
+	top:0;
+	/*left: 0;*/
+	width:100%;
+	/*max-width: 1000px;*/
+	box-shadow:0px 4px 3px rgba(0,0,0,.5);
+}
+
+.menu-fixed ul li a{
+	padding:15px 20px;
+
+}
+
+nav{
+	
+	/*Animación al menu*/
+	-webkit-transition: all ease .5s;
+	-o-transition: all ease .5s;
+	transition: all ease .5s
+
+}
+
+.con_tit::after {
+    content: '';
+    display: block;
+    width: 70px;
+    height: 2px;
+    background: #bb162b;
+    margin-top: 18px;
+}
+
+
+/* Sección Propósito y Valores */
+.seccion {
+    padding: 50px 20px;
+    background-color: #f9f5ec; /* Tono caqui claro */
+    text-align: center;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.titulo-seccion {
+    font-size: 2em;
+    color: #6d4c41; /* Marrón suave */
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.proposito h3,
+.valores h3 {
+    color: #4b382e; /* Marrón más oscuro */
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.proposito p {
+    font-size: 1.1em;
+    color: #5c4033; /* Marrón tierra */
+    line-height: 1.6;
+}
+
+.lista-valores {
+    list-style: none;
+    padding: 0;
+}
+
+.lista-valores li {
+    background: #e8dcc3; /* Beige suave */
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 1.1em;
+    color: #3e2a1a;
+    text-align: left;
+}
