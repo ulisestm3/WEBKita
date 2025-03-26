@@ -1,14 +1,14 @@
 <?php
-    $server = "localhost";
-    $usuario = "root";
-    $password = "";
-    $database = "u120947202_dbkita";
+    session_start();
 
-    $enlace = mysqli_connect($server, $usuario, $password, $database);
-
-    if (!$enlace) {
-        die("Conexión fallida: " . mysqli_connect_error());
+    // Verificar si el usuario está autenticado
+    if (!isset($_SESSION['usuario'])) {
+        header("Location: login.php"); // Redirigir al formulario de inicio de sesión
+        exit;
     }
+
+    //Conexiona la bd
+    require_once 'conexion.php';
 
     if(isset($_POST['registro'])){
         $Nombre = $_POST['Nombre'];
@@ -210,7 +210,10 @@
     <div class="container">
         <h1>Gestión de Categorías</h1>
 
-        <a href="../index.html">KITA</a>
+        <div class="text-center">
+        <a href="administrar.php"><img  src="../Images/administrar.png" alt="agregar articulo" width="60" height="60"> </a>
+        <h5>Administrar</h5>
+        </div>
 
         <!-- Formulario Nueva Categoría -->
         <div class="form-section">

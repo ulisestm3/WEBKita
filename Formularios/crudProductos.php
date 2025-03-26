@@ -1,15 +1,14 @@
 <?php
-    // Configuración de la base de datos
-    $server = "localhost";
-    $usuario = "root";
-    $password = "";
-    $database = "u120947202_dbkita";
+    session_start();
 
-    $enlace = mysqli_connect($server, $usuario, $password, $database);
-
-    if (!$enlace) {
-        die("Conexión fallida: " . mysqli_connect_error());
+    // Verificar si el usuario está autenticado
+    if (!isset($_SESSION['usuario'])) {
+        header("Location: login.php"); // Redirigir al formulario de inicio de sesión
+        exit;
     }
+
+    //Conexiona la bd
+    require_once 'conexion.php';
 
     // Función para subir imágenes
     function subirImagen($inputName) {
@@ -134,6 +133,15 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
 
+        .table-container {
+        max-width: 100%;
+        overflow-x: auto; /* Agrega desplazamiento horizontal si es necesario */
+        margin-top: 15px;
+        border: 1px solid var(--color2);
+        border-radius: 5px;
+        }
+
+
         h1, h2 {
             color: var(--color3);
             border-bottom: 2px solid var(--color2);
@@ -145,7 +153,7 @@
         h2 { font-size: 20px; margin-top: 30px; }
 
         .form-section, .list-section {
-            margin-bottom: 30px;
+            margin-bottom: 5px;
         }
 
         .form-group {
@@ -250,14 +258,14 @@
         }
 
         .modal-content {
-            background-color: white;
-            margin: 10% auto;
-            padding: 20px;
-            border-radius: 5px;
-            min-width: 300px;
-            max-width: 500px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.2);
-        }
+    background-color: white;
+    margin: 20px auto; /* Margen superior fijo de 20px */
+    padding: 20px;
+    border-radius: 5px;
+    min-width: 300px;
+    max-width: 500px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+}
 
         @media (max-width: 768px) {
             .modal-content {
@@ -272,6 +280,39 @@
                 width: 100%;
             }
         }
+        .form-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Define dos columnas */
+    gap: 20px; /* Espacio entre las columnas */
+}
+
+.form-column {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espacio entre los elementos dentro de cada columna */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Espacio entre la etiqueta y el campo de entrada */
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-group small {
+    font-size: 0.9em;
+    color: #666;
+}
     </style>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -279,7 +320,10 @@
     <div class="container">
         <h1>Gestión de Productos</h1>
 
-        <a href="../index.html">KITA</a>
+        <div class="text-center">
+        <a href="administrar.php"><img  src="../Images/administrar.png" alt="agregar articulo" width="60" height="60"> </a>
+        <h5>Administrar</h5>
+        </div>
 
         <!-- Formulario Nuevo Producto -->
         <div class="form-section">
@@ -314,7 +358,7 @@
         </div>
 
         <!-- Listado de Productos -->
-        <div class="list-section">
+        <div class="list-section table-container">
             <h2>Listado de Productos</h2>
             <table>
                 <thead>
@@ -359,29 +403,35 @@
             <h2>Editar Producto</h2>
             <form id="formEditar" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="id" id="editarId">
-                <div class="form-group">
-                    <label>Nombre:</label>
-                    <input type="text" id="editarNombre" name="Nombre" required>
-                </div>
-                <div class="form-group">
-                    <label>Descripción:</label>
-                    <textarea id="editarDescripcion" name="Descripcion"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Imagen 1:</label>
-                    <input type="file" id="editarImg1" name="Img1" accept="image/*">
-                    <small id="currentImg1"></small>
-                </div>
-                <div class="form-group">
-                    <label>Imagen 2:</label>
-                    <input type="file" id="editarImg2" name="Img2" accept="image/*">
-                    <small id="currentImg2"></small>
-                </div>
-                <div class="form-group">
-                    <label>Imagen 3:</label>
-                    <input type="file" id="editarImg3" name="Img3" accept="image/*">
-                    <small id="currentImg3"></small>
-                </div>
+                <div class="form-container">
+    <div class="form-column">
+        <div class="form-group">
+            <label>Nombre:</label>
+            <input type="text" id="editarNombre" name="Nombre" required>
+        </div>
+        <div class="form-group">
+            <label>Descripción:</label>
+            <textarea id="editarDescripcion" name="Descripcion"></textarea>
+        </div>
+    </div>
+    <div class="form-column">
+    <div class="form-group">
+            <label>Imagen 1:</label>
+            <input type="file" id="editarImg1" name="Img1" accept="image/*">
+            <small id="currentImg1"></small>
+        </div>
+        <div class="form-group">
+            <label>Imagen 2:</label>
+            <input type="file" id="editarImg2" name="Img2" accept="image/*">
+            <small id="currentImg2"></small>
+        </div>
+        <div class="form-group">
+            <label>Imagen 3:</label>
+            <input type="file" id="editarImg3" name="Img3" accept="image/*">
+            <small id="currentImg3"></small>
+        </div>
+    </div>
+</div>
                 
                 <div class="modal-actions">
                     <button type="button" class="btn-cancel" onclick="cerrarModalEditar()">Cancelar</button>
@@ -477,6 +527,8 @@
                 history.replaceState(null, null, window.location.pathname);
             });
         <?php endif; ?>
+
+        
     </script>
 </body>
 </html>
