@@ -7,7 +7,7 @@
         exit;
     }
 
-    //Conexiona la bd
+    // Conexión a la base de datos
     require_once 'conexion.php';
 
     // Función para subir imágenes
@@ -18,10 +18,10 @@
                 if(!is_dir($directorioDestino)) {
                     mkdir($directorioDestino, 0777, true);
                 }
-                
+
                 $nombreArchivo = uniqid() . '_' . basename($_FILES[$inputName]["name"]);
                 $rutaCompleta = $directorioDestino . $nombreArchivo;
-                
+
                 // Verificar si es una imagen
                 $check = getimagesize($_FILES[$inputName]["tmp_name"]);
                 if($check !== false) {
@@ -43,15 +43,15 @@
     if(isset($_POST['registro'])){
         $Nombre = mysqli_real_escape_string($enlace, $_POST['Nombre']);
         $Descripcion = mysqli_real_escape_string($enlace, $_POST['Descripcion']);
-        
+        $Precio = number_format((float)$_POST['Precio'], 2, '.', ''); // Asegúrate de que Precio tenga dos decimales
         // Subir imágenes
         $Img1 = subirImagen('Img1') ?? '';
         $Img2 = subirImagen('Img2') ?? '';
         $Img3 = subirImagen('Img3') ?? '';
 
-        $insertardatos = "INSERT INTO tblproductos VALUES('','$Nombre','$Descripcion', '$Img1', '$Img2', '$Img3',1)";
+        $insertardatos = "INSERT INTO tblproductos VALUES('','$Nombre','$Descripcion', '$Precio', '$Img1', '$Img2', '$Img3',1)";
         $ejecutarinsertar = mysqli_query($enlace, $insertardatos);
-        
+
         if($ejecutarinsertar) {
             header("Location: ".$_SERVER['PHP_SELF']."?success=1");
         } else {
@@ -65,7 +65,7 @@
         $id = intval($_GET['eliminar']);
         $eliminar = "UPDATE tblproductos SET Activo = '0' WHERE IDProducto = $id";
         $ejecutarEliminar = mysqli_query($enlace, $eliminar);
-        
+
         if($ejecutarEliminar) {
             header("Location: ".$_SERVER['PHP_SELF']."?success=1");
         } else {
@@ -79,20 +79,22 @@
         $id = intval($_POST['id']);
         $Nombre = mysqli_real_escape_string($enlace, $_POST['Nombre']);
         $Descripcion = mysqli_real_escape_string($enlace, $_POST['Descripcion']);
-        
+        $Precio = number_format((float)$_POST['Precio'], 2, '.', ''); // Capturar y formatear el Precio
+
         // Obtener las imágenes existentes primero
         $consulta = "SELECT Img1, Img2, Img3 FROM tblproductos WHERE IDProducto = $id";
         $resultado = mysqli_query($enlace, $consulta);
         $fila = mysqli_fetch_assoc($resultado);
-        
+
         // Subir nuevas imágenes si se proporcionaron
         $Img1 = !empty($_FILES['Img1']['name']) ? (subirImagen('Img1') ?? $fila['Img1']) : $fila['Img1'];
         $Img2 = !empty($_FILES['Img2']['name']) ? (subirImagen('Img2') ?? $fila['Img2']) : $fila['Img2'];
         $Img3 = !empty($_FILES['Img3']['name']) ? (subirImagen('Img3') ?? $fila['Img3']) : $fila['Img3'];
 
-        $actualizar = "UPDATE tblproductos SET Nombre = '$Nombre', Descripcion = '$Descripcion', Img1 = '$Img1', Img2 = '$Img2', Img3 = '$Img3' WHERE IDProducto = $id";
+        // Actualizar el producto en la base de datos, incluyendo el Precio
+        $actualizar = "UPDATE tblproductos SET Nombre = '$Nombre', Descripcion = '$Descripcion', Precio = '$Precio', Img1 = '$Img1', Img2 = '$Img2', Img3 = '$Img3' WHERE IDProducto = $id";
         $ejecutarActualizar = mysqli_query($enlace, $actualizar);
-        
+
         if($ejecutarActualizar) {
             header("Location: ".$_SERVER['PHP_SELF']."?success=1");
         } else {
@@ -101,6 +103,7 @@
         exit();
     }
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -134,13 +137,12 @@
         }
 
         .table-container {
-        max-width: 100%;
-        overflow-x: auto; /* Agrega desplazamiento horizontal si es necesario */
-        margin-top: 15px;
-        border: 1px solid var(--color2);
-        border-radius: 5px;
+            max-width: 100%;
+            overflow-x: auto;
+            margin-top: 15px;
+            border: 1px solid var(--color2);
+            border-radius: 5px;
         }
-
 
         h1, h2 {
             color: var(--color3);
@@ -258,61 +260,72 @@
         }
 
         .modal-content {
-    background-color: white;
-    margin: 20px auto; /* Margen superior fijo de 20px */
-    padding: 20px;
-    border-radius: 5px;
-    min-width: 300px;
-    max-width: 500px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.2);
-}
+            background-color: white;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 5px;
+            min-width: 300px;
+            max-width: 500px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        }
 
         @media (max-width: 768px) {
             .modal-content {
                 width: 80%;
             }
-            
+
             .form-actions, .modal-actions {
                 flex-direction: column;
             }
-            
+
             button {
                 width: 100%;
             }
         }
+
         .form-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Define dos columnas */
-    gap: 20px; /* Espacio entre las columnas */
-}
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
 
-.form-column {
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* Espacio entre los elementos dentro de cada columna */
-}
+        .form-column {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
 
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 5px; /* Espacio entre la etiqueta y el campo de entrada */
-}
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
 
-.form-group label {
-    font-weight: bold;
-}
+        .form-group label {
+            font-weight: bold;
+        }
 
-.form-group input,
-.form-group textarea {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
+        .form-group input,
+        .form-group textarea {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
 
-.form-group small {
-    font-size: 0.9em;
-    color: #666;
-}
+        .form-group small {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -321,21 +334,27 @@
         <h1>Gestión de Productos</h1>
 
         <div class="text-center">
-        <a href="administrar.php"><img  src="../Images/administrar.png" alt="agregar articulo" width="60" height="60"> </a>
-        <h5>Administrar</h5>
+            <a href="administrar.php"><img src="../Images/administrar.png" alt="agregar articulo" width="60" height="60"></a>
+            <h5>Administrar</h5>
         </div>
 
         <!-- Formulario Nuevo Producto -->
         <div class="form-section">
             <h2>Nuevo Producto</h2>
-            <form action="" method="post" enctype="multipart/form-data">
+            <form id="productForm" action="" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label>Nombre:</label>
                     <input type="text" name="Nombre" placeholder="Ej. Jabon" required>
                 </div>
                 <div class="form-group">
                     <label>Descripción:</label>
-                    <textarea name="Descripcion" placeholder="Ej. Jabon de coco"></textarea>
+                    <textarea name="Descripcion" placeholder="Ej. Jabon de coco" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="precio">Precio:</label>
+                    <input type="number" id="precio" name="Precio" placeholder="100.00" step="0.01" min="0" required>
+                    <small id="error-msg" style="color: red; display: none;">Ingrese un número válido.</small>
                 </div>
                 <div class="form-group">
                     <label>Imagen 1:</label>
@@ -349,7 +368,7 @@
                     <label>Imagen 3:</label>
                     <input type="file" name="Img3" accept="image/*">
                 </div>
-                
+
                 <div class="form-actions">
                     <button type="submit" name="registro">Agregar</button>
                     <button type="reset">Limpiar</button>
@@ -366,6 +385,7 @@
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Descripción</th>
+                        <th>Precio</th>
                         <th>Img 1</th>
                         <th>Img 2</th>
                         <th>Img 3</th>
@@ -376,17 +396,18 @@
                     <?php
                     $consulta = "SELECT * FROM tblproductos WHERE Activo = 1";
                     $resultado = mysqli_query($enlace, $consulta);
-                    
+
                     while($fila = mysqli_fetch_assoc($resultado)) {
                         echo "<tr>";
                         echo "<td>".$fila['IDProducto']."</td>";
                         echo "<td>".htmlspecialchars($fila['Nombre'])."</td>";
                         echo "<td>".htmlspecialchars($fila['Descripcion'])."</td>";
+                        echo "<td>".htmlspecialchars($fila['Precio'])."</td>";
                         echo "<td>".($fila['Img1'] ? "<img src='../".$fila['Img1']."' class='preview-img'>" : "")."</td>";
                         echo "<td>".($fila['Img2'] ? "<img src='../".$fila['Img2']."' class='preview-img'>" : "")."</td>";
                         echo "<td>".($fila['Img3'] ? "<img src='../".$fila['Img3']."' class='preview-img'>" : "")."</td>";
                         echo "<td class='actions'>";
-                        echo "<button class='btn-edit' onclick=\"mostrarModalEditar(".$fila['IDProducto'].", '".htmlspecialchars($fila['Nombre'], ENT_QUOTES)."', '".htmlspecialchars($fila['Descripcion'], ENT_QUOTES)."', '".$fila['Img1']."', '".$fila['Img2']."', '".$fila['Img3']."')\">Editar</button>";
+                        echo "<button class='btn-edit' onclick=\"mostrarModalEditar(".$fila['IDProducto'].", '".htmlspecialchars($fila['Nombre'], ENT_QUOTES)."', '".htmlspecialchars($fila['Descripcion'], ENT_QUOTES)."', '".$fila['Precio']."', '".$fila['Img1']."', '".$fila['Img2']."', '".$fila['Img3']."')\">Editar</button>";
                         echo "<button class='btn-delete' onclick=\"mostrarModalEliminar(".$fila['IDProducto'].", '".htmlspecialchars($fila['Nombre'], ENT_QUOTES)."')\">Eliminar</button>";
                         echo "</td>";
                         echo "</tr>";
@@ -404,35 +425,40 @@
             <form id="formEditar" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="id" id="editarId">
                 <div class="form-container">
-    <div class="form-column">
-        <div class="form-group">
-            <label>Nombre:</label>
-            <input type="text" id="editarNombre" name="Nombre" required>
-        </div>
-        <div class="form-group">
-            <label>Descripción:</label>
-            <textarea id="editarDescripcion" name="Descripcion"></textarea>
-        </div>
-    </div>
-    <div class="form-column">
-    <div class="form-group">
-            <label>Imagen 1:</label>
-            <input type="file" id="editarImg1" name="Img1" accept="image/*">
-            <small id="currentImg1"></small>
-        </div>
-        <div class="form-group">
-            <label>Imagen 2:</label>
-            <input type="file" id="editarImg2" name="Img2" accept="image/*">
-            <small id="currentImg2"></small>
-        </div>
-        <div class="form-group">
-            <label>Imagen 3:</label>
-            <input type="file" id="editarImg3" name="Img3" accept="image/*">
-            <small id="currentImg3"></small>
-        </div>
-    </div>
-</div>
-                
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label>Nombre:</label>
+                            <input type="text" id="editarNombre" name="Nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Descripción:</label>
+                            <textarea id="editarDescripcion" name="Descripcion"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="editarPrecio">Precio:</label>
+                            <input type="number" id="editarPrecio" name="Precio" placeholder="100.00" step="0.01" min="0" required>
+                            <small id="error-msg-editar" style="color: red; display: none;">Ingrese un número válido.</small>
+                        </div>
+                    </div>
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label>Imagen 1:</label>
+                            <input type="file" id="editarImg1" name="Img1" accept="image/*">
+                            <small id="currentImg1"></small>
+                        </div>
+                        <div class="form-group">
+                            <label>Imagen 2:</label>
+                            <input type="file" id="editarImg2" name="Img2" accept="image/*">
+                            <small id="currentImg2"></small>
+                        </div>
+                        <div class="form-group">
+                            <label>Imagen 3:</label>
+                            <input type="file" id="editarImg3" name="Img3" accept="image/*">
+                            <small id="currentImg3"></small>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="modal-actions">
                     <button type="button" class="btn-cancel" onclick="cerrarModalEditar()">Cancelar</button>
                     <button type="submit" name="actualizar">Guardar Cambios</button>
@@ -445,7 +471,7 @@
     <div id="modalEliminar" class="modal">
         <div class="modal-content">
             <h2>Confirmar Eliminación</h2>
-            <p>¿Estás seguro de que deseas eliminar el producto "<span id="nombreCategoria"></span>"?</p>
+            <p>¿Estás seguro de que deseas eliminar el producto "<span id="nombreProducto"></span>"?</p>
             <div class="modal-actions">
                 <button type="button" class="btn-cancel" onclick="cerrarModalEliminar()">Cancelar</button>
                 <button type="button" class="btn-confirm" onclick="confirmarEliminacion()">Eliminar</button>
@@ -456,43 +482,59 @@
     <script>
         // Variables globales
         let productoAEliminar = null;
-        
+
         // Funciones para el modal de editar
-        function mostrarModalEditar(id, nombre, descripcion, img1, img2, img3) {
+        function mostrarModalEditar(id, nombre, descripcion, precio, img1, img2, img3) {
             document.getElementById('editarId').value = id;
             document.getElementById('editarNombre').value = nombre;
             document.getElementById('editarDescripcion').value = descripcion;
-            
+            document.getElementById('editarPrecio').value = precio; // Establecer el valor del precio
+
             // Mostrar información de imágenes actuales
             document.getElementById('currentImg1').textContent = img1 ? 'Actual: ' + img1 : 'Sin imagen';
             document.getElementById('currentImg2').textContent = img2 ? 'Actual: ' + img2 : 'Sin imagen';
             document.getElementById('currentImg3').textContent = img3 ? 'Actual: ' + img3 : 'Sin imagen';
-            
+
             document.getElementById('modalEditar').style.display = 'block';
         }
-        
+
+        document.getElementById('editarPrecio').addEventListener('blur', function() {
+            // Formatea el valor a dos decimales cuando el campo pierde el foco
+            this.value = parseFloat(this.value).toFixed(2);
+        });
+
+        document.getElementById('formEditar').addEventListener('submit', function(event) {
+            var precio = parseFloat(document.getElementById('editarPrecio').value);
+            if (precio < 0) {
+                event.preventDefault(); // Evita que el formulario se envíe
+                document.getElementById('error-msg-editar').style.display = 'inline';
+            } else {
+                document.getElementById('error-msg-editar').style.display = 'none';
+            }
+        });
+
         function cerrarModalEditar() {
             document.getElementById('modalEditar').style.display = 'none';
         }
-        
+
         // Funciones para el modal de eliminar
         function mostrarModalEliminar(id, nombre) {
             productoAEliminar = id;
-            document.getElementById('nombreCategoria').textContent = nombre;
+            document.getElementById('nombreProducto').textContent = nombre;
             document.getElementById('modalEliminar').style.display = 'block';
         }
-        
+
         function cerrarModalEliminar() {
             document.getElementById('modalEliminar').style.display = 'none';
             productoAEliminar = null;
         }
-        
+
         function confirmarEliminacion() {
             if (productoAEliminar) {
                 window.location.href = '?eliminar=' + productoAEliminar;
             }
         }
-        
+
         // Cerrar modales al hacer clic fuera del contenido
         window.onclick = function(event) {
             if (event.target == document.getElementById('modalEditar')) {
@@ -502,7 +544,22 @@
                 cerrarModalEliminar();
             }
         }
-        
+
+        document.getElementById('precio').addEventListener('blur', function() {
+            // Formatea el valor a dos decimales cuando el campo pierde el foco
+            this.value = parseFloat(this.value).toFixed(2);
+        });
+
+        document.getElementById('productForm').addEventListener('submit', function(event) {
+            var precio = parseFloat(document.getElementById('precio').value);
+            if (precio < 0) {
+                event.preventDefault(); // Evita que el formulario se envíe
+                document.getElementById('error-msg').style.display = 'inline';
+            } else {
+                document.getElementById('error-msg').style.display = 'none';
+            }
+        });
+
         // Mostrar mensajes de éxito/error
         <?php if(isset($_GET['success'])): ?>
             Swal.fire({
@@ -527,8 +584,6 @@
                 history.replaceState(null, null, window.location.pathname);
             });
         <?php endif; ?>
-
-        
     </script>
 </body>
 </html>
