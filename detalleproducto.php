@@ -91,6 +91,7 @@ if (isset($_POST['txtID'])) {
             <h4>Código: <?php echo $producto['IDProducto']; ?></h4>
             <h3><?php echo $producto['Nombre']; ?></h3>
             <h4><?php echo $producto['Descripcion']; ?></h4>
+            <h4>Precio: C$ <?php echo $producto['Precio']; ?></h4>
             <br>
             <form action="/admin/carrito/agregar/<?php echo $producto['IDProducto']; ?>" method="post">
                 <button class="btn btn-primary comprar-btn">Agregar al carrito <i class="fas fa-shopping-cart"></i></button>
