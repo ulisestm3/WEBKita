@@ -1,9 +1,25 @@
 <?php
-//Conexiona la bd
+// Conexión a la base de datos
 require_once 'conexion.php';
 
-$sql = "SELECT * FROM tblproductos WHERE Activo = 1";
-$resultado = mysqli_query($enlace, $sql);
+// Verificar si se ha enviado el ID del producto
+if (isset($_POST['txtID'])) {
+    $idProducto = $_POST['txtID'];
+
+    // Consulta para obtener los detalles del producto específico
+    $sql = "SELECT * FROM tblproductos WHERE IDProducto = $idProducto AND Activo = 1";
+    $resultado = mysqli_query($enlace, $sql);
+
+    if (mysqli_num_rows($resultado) > 0) {
+        $producto = mysqli_fetch_assoc($resultado);
+    } else {
+        echo "No se encontró el producto.";
+        exit;
+    }
+} else {
+    echo "ID de producto no proporcionado.";
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -12,29 +28,35 @@ $resultado = mysqli_query($enlace, $sql);
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>KITA Te Cuida</title>
+    <title>KITA-DETALLEPRODUCTO Te Cuida</title>
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="css/stilo.css" rel="stylesheet" type="text/css">
     <link href="js/mai.js" rel="stylesheet">
     <style>
-        .card-custom {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-        .card-custom img {
-            object-fit: cover;
-            height: 200px; /* Ajusta la altura de la imagen */
-        }
-        .card-custom .card-body {
-            padding: 15px;
-        }
-        .card-custom .card-title {
-            font-size: 1.1em;
-            margin-bottom: 10px;
-        }
-    </style>
+    .card-custom {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+    .card-custom img {
+        object-fit: cover;
+        height: 200px; /* Altura inicial de la imagen */
+        transition: transform 0.3s ease, height 0.3s ease; /* Transición suave */
+    }
+    .card-custom img:hover {
+        transform: scale(1.5); /* Escala la imagen al 150% */
+        height: auto; /* Permite que la imagen se expanda */
+    }
+    .card-custom .card-body {
+        padding: 15px;
+    }
+    .card-custom .card-title {
+        font-size: 1.1em;
+        margin-bottom: 10px;
+    }
+</style>
+
 </head>
 <body>
     <nav class="navbar navbar-default menu-fixed">
@@ -60,43 +82,27 @@ $resultado = mysqli_query($enlace, $sql);
             </div>
         </div>
     </nav>
-    
+
     <section id="productos" class="seccion">
         <div class="container">
-            <h2 class="titulo-seccion">Nuestros Productos</h2>
+            <h2 class="titulo-seccion">Detalle de Producto</h2>
 
-            <div class="container">
-                <div class="row row-cols-1 row-cols-md-4 g-4 justify-content-left">
-                    <?php
-                    if (mysqli_num_rows($resultado) > 0) {
-                        while ($producto = mysqli_fetch_assoc($resultado)) {
-                            echo '<div class="col">';
-                            echo '<div class="card card-custom h-100">';
-                            echo '<div class="overflow-hidden" method="post">';
-                            echo '<img src="' . $producto['Img1'] . '" class="card-img-top" alt="' . $producto['Img1'] . '" style="width: 100%;">';
-                            echo '</div>';
-                            echo '<div class="card-body d-flex flex-column justify-content-between">';
-                            echo '<h4 class="card-title">Código ' . $producto['IDProducto'] . '</h4>';
-                            echo '<h4 class="card-title">' . $producto['Nombre'] . '</h4>';
-                            echo '<p class="card-text"></p>';
-
-                            echo '<form action="detalleproducto.php" method="post">';
-                            echo '<input type="hidden" name="txtID" value="' . $producto['IDProducto'] . '">';
-                            echo '<button type="submit" class="btn btn-success">Ver detalle</button>';
-                            echo '</form>';
-                            echo '</div>';
-                            echo '</div>';
-                            echo '</div>';
-                        }
-                    } else {
-                        echo "No se encontraron productos.";
-                    }
-                    ?>
-                </div>
-            </div>
+             <div class="container producto-container">
+            <h4>Código: <?php echo $producto['IDProducto']; ?></h4>
+            <h3><?php echo $producto['Nombre']; ?></h3>
+            <h4><?php echo $producto['Descripcion']; ?></h4>
+            <br>
+            <form action="/admin/carrito/agregar/<?php echo $producto['IDProducto']; ?>" method="post">
+                <button class="btn btn-primary comprar-btn">Agregar al carrito <i class="fas fa-shopping-cart"></i></button>
+            </form>
+            <br>
+            <img src="<?php echo $producto['Img1']; ?>" class="card-img-top" alt="<?php echo $producto['Img1']; ?>" style="width: 100%;">
+            <img src="<?php echo $producto['Img2']; ?>" class="card-img-top" alt="<?php echo $producto['Img2']; ?>" style="width: 100%;">
+            <img src="<?php echo $producto['Img3']; ?>" class="card-img-top" alt="<?php echo $producto['Img3']; ?>" style="width: 100%;">
         </div>
-    </section>
-    <footer>
+         </div>
+        </section>
+        <footer>
         <section class="pie01">
             <div class="container">
                 <div class="row" text align="left">
