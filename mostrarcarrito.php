@@ -1,28 +1,10 @@
 <?php
 include 'carrito.php';
+
 // Conexión a la base de datos
 require_once 'conexion.php';
 
-// Verificar si se ha enviado el ID del producto
-if (isset($_POST['txtID'])) {
-    $idProducto = $_POST['txtID'];
-
-    // Consulta para obtener los detalles del producto específico
-    $sql = "SELECT * FROM tblproductos WHERE IDProducto = $idProducto AND Activo = 1";
-    $resultado = mysqli_query($enlace, $sql);
-
-    if (mysqli_num_rows($resultado) > 0) {
-        $producto = mysqli_fetch_assoc($resultado);
-    } else {
-        echo "No se encontró el producto.";
-        exit;
-    }
-} else {
-    echo "ID de producto no proporcionado.";
-    exit;
-}
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -79,42 +61,67 @@ if (isset($_POST['txtID'])) {
                     <li><a href="PropositoYValores.html">Proposito Y Valores</a></li>
                     <li><a href="Contactenos.html">Contáctenos</a></li>
                     <li><a href="Formularios/login.php">Administrar</a></li>
-                    <li><a href="mostrarcarrito.php">Carrito (<?php echo (empty($_SESSION['CARRITO'])?0:count($_SESSION['CARRITO']));?>)</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <section id="productos" class="seccion">
-        <div class="container">
-            <h2 class="titulo-seccion">Detalle de Producto</h2>
+<br>
+<br>
+<br>
+<br>
+<h3 class="text-center">Productos del carrito</h3>
+
+<a href="">Carrito (<?php echo (empty($_SESSION['CARRITO'])?0:count($_SESSION['CARRITO']));?>)</a>
+
+<?php if(!empty($_SESSION['CARRITO'])) {; ?>
+
+<table class="table table-light table-bordered">
+    <tbody>
+        <tr>
+            <th width="40%">Descripción</th>
+            <th width="15%" class="text-center">Cantidad</th>
+            <th width="20%" class="text-center">Precio</th>
+            <th width="20%" class="text-center">Total</th>
+            <th width="5%">Acción</th>
+        </tr>
+        <?php $total=0; ?>
+        <?php foreach($_SESSION['CARRITO'] as $indice=>$producto){ ?>
+        <tr>
+            <td width="40%"><?php echo $producto['NOMBRE']?></td>
+            <td width="15%" class="text-center"><?php echo $producto['CANTIDAD']?></td>
+            <td width="20%" class="text-center">C$ <?php echo $producto['PRECIO']?></td>
+            <td width="20%" class="text-center">C$ <?php echo number_format($producto['PRECIO']*$producto['CANTIDAD'],2) ?></td>
+            <td width="5%"> 
+                <form action="mostrarcarrito.php" method="post">
+                    <input type="hidden" name="id" value="<?php echo $producto['ID'] ?>">
+                    <button
+                    class="btn btn-danger"
+                    type="submit"
+                    name="btnAccion"
+                    value="Eliminar"
+                    >Eliminar</button>
+                </form>
+            </td>
             
-            <div class="container producto-container">
-            <h4>Código: <?php echo $producto['IDProducto']; ?></h4>
-            <h3><?php echo $producto['Nombre']; ?></h3>
-            <h4><?php echo $producto['Descripcion']; ?></h4>
-            <h4>Precio: C$ <?php echo $producto['Precio']; ?></h4>
-            <br>
-            <form action="mostrarcarrito.php" method="post">
-            <input type="hidden" name="id" id="id" value="<?php echo $producto['IDProducto'];?>">
-            <input type="hidden" name="nombre" id="nombre" value="<?php echo $producto['Nombre'];?>">
-            <input type="hidden" name="precio" id="precio" value="<?php echo $producto['Precio'];?>">
-            <input type="hidden" name="cantidad" id="cantidad" value="<?php echo 1; ?>">
-            <button class="btn btn-success"
-                name="btnAccion"
-                value="Agregar"
-                type="submit"
-                >Agregar a Carrito
-            </button>
-            </form>
-            <br>
-            <img src="<?php echo $producto['Img1']; ?>" class="card-img-top" alt="<?php echo $producto['Img1']; ?>" style="width: 100%;">
-            <img src="<?php echo $producto['Img2']; ?>" class="card-img-top" alt="<?php echo $producto['Img2']; ?>" style="width: 100%;">
-            <img src="<?php echo $producto['Img3']; ?>" class="card-img-top" alt="<?php echo $producto['Img3']; ?>" style="width: 100%;">
-        </div>
-         </div>
-        </section>
-        <footer>
+        </tr>
+        <?php $total=$total+($producto['PRECIO']*$producto['CANTIDAD']); ?>
+        <?php } ?>
+        <tr>
+            <td colspan="3" align="right"><h3>Total</h3></td>
+            <td align="right"><h3><?php echo number_format($total,2);?></h3></td>
+            <td></td>
+        </tr>
+        
+    </tbody>
+</table>
+
+<?php }else{ ?>
+    <div class="alert alert-success">
+        No hay productos en el carrito
+</div>
+<?php  } ?>
+<footer>
         <section class="pie01">
             <div class="container">
                 <div class="row" text align="left">
