@@ -1,4 +1,6 @@
 <?php
+	include 'carrito.php';
+
 //Conexiona la bd
 require_once 'conexion.php';
 
@@ -56,6 +58,7 @@ $resultado = mysqli_query($enlace, $sql);
                     <li><a href="PropositoYValores.html">Proposito Y Valores</a></li>
                     <li><a href="Contactenos.html">Contáctenos</a></li>
                     <li><a href="Formularios/login.php">Administrar</a></li>
+                    <li><a href="mostrarcarrito.php">Carrito (<?php echo (empty($_SESSION['CARRITO'])?0:count($_SESSION['CARRITO']));?>)</a></li>
                 </ul>
             </div>
         </div>

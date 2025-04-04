@@ -1,5 +1,7 @@
 <?php
-session_start(); // Inicia la sesión
+include '../carrito.php';
+
+//session_start(); // Inicia la sesión
 
 //Conexiona la bd
 require_once 'conexion.php';
@@ -86,6 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <li><a href="../Productos.php">Productos</a></li>
                     <li><a href="../PropositoYValores.html">Propósito y Valores</a></li>
                     <li><a href="../Contactenos.html">Contáctenos</a></li>
+                    <li><a href="mostrarcarrito.php">Carrito (<?php echo (empty($_SESSION['CARRITO'])?0:count($_SESSION['CARRITO']));?>)</a></li>
                 </ul>
             </div>
         </div>

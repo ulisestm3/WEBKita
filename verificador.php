@@ -5,6 +5,7 @@ include 'carrito.php';
 require_once 'conexion.php';
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,8 +40,7 @@ require_once 'conexion.php';
         margin-bottom: 10px;
     }
 </style>
-
-</head>
+    </head>
 <body>
     <nav class="navbar navbar-default menu-fixed">
         <div class="container-fluid">
@@ -71,74 +71,116 @@ require_once 'conexion.php';
 <br>
 <br>
 <br>
-<h3 class="text-center">Productos del carrito</h3>
 
-<a href="">Carrito (<?php echo (empty($_SESSION['CARRITO'])?0:count($_SESSION['CARRITO']));?>)</a>
 
-<?php if(!empty($_SESSION['CARRITO'])) {; ?>
+<?php 
+    $ClientID="Aci0X-JgYogHdef0PMy9SNngabzbVHytAkJ8JLH-GQhzca-ie0w9ByVXFnFdc1YsdR_9ZOFexkm3-7gC";
+    $Secret="ECR274wyC25f3WI0FxMJRg_9JpbWLC_V_w8JGjLGBnc_x-HdOzOyZ4eeu1ciduLIcC_mftpHQtB1iPhn";
 
-<table class="table table-light table-bordered">
-    <tbody>
-        <tr>
-            <th width="40%">Descripción</th>
-            <th width="15%" class="text-center">Cantidad</th>
-            <th width="20%" class="text-center">Precio</th>
-            <th width="20%" class="text-center">Total</th>
-            <th width="5%">Acción</th>
-        </tr>
-        <?php $total=0; ?>
-        <?php foreach($_SESSION['CARRITO'] as $indice=>$producto){ ?>
-        <tr>
-            <td width="40%"><?php echo $producto['NOMBRE']?></td>
-            <td width="15%" class="text-center"><?php echo $producto['CANTIDAD']?></td>
-            <td width="20%" class="text-center">C$ <?php echo $producto['PRECIO']?></td>
-            <td width="20%" class="text-center">C$ <?php echo number_format($producto['PRECIO']*$producto['CANTIDAD'],2) ?></td>
-            <td width="5%"> 
-                <form action="mostrarcarrito.php" method="post">
-                    <input type="hidden" name="id" value="<?php echo $producto['ID'] ?>">
-                    <button
-                    class="btn btn-danger"
-                    type="submit"
-                    name="btnAccion"
-                    value="Eliminar"
-                    >Eliminar</button>
-                </form>
-            </td>
-            
-        </tr>
-        <?php $total=$total+($producto['PRECIO']*$producto['CANTIDAD']); ?>
-        <?php } ?>
-        <tr>
-            <td colspan="3" align="right"><h3>Total</h3></td>
-            <td align="right"><h3><?php echo number_format($total,2);?></h3></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td colspan="5">
-                <form action="pagar.php" method="post">
-                    <div class="alert alert-success" role="alert">
-                        <div class="form-group">
-                            <label for="my-input">Correo</label>
-                            <input id="email" class="form-control" type="email" name="email" placeholder="Escribe tu correo" required>
-                        </div>
-                        <small id="emailhelp" class="form-text text-muted">
-                            Los productos se enviaran a este correo.
-                        </small>
-                    </div>
-                    <button class="btn btn-primary btn-lg btn-block" type="submit" name="btnAccion">Proceder a pagar</button>
-                </form>
-                
-            </td>
-        </tr>
+        $Login= curl_init("https://api-m.sandbox.paypal.com/v1/oauth2/token");
+        curl_setopt($Login,CURLOPT_RETURNTRANSFER,TRUE);
+        curl_setopt($Login,CURLOPT_USERPWD,$ClientID.":".$Secret);
+        curl_setopt($Login,CURLOPT_POSTFIELDS,"grant_type=client_credentials");
+        $Respuesta=curl_exec($Login);
+
+        $objRespuesta=json_decode($Respuesta);
+
+        $AccessToken=$objRespuesta->access_token;
+
+        //print_r($AccessToken);
+
+        // Validar que paymentID fue recibido
+        if (!isset($_GET['paymentID'])) {
+            die("Error: No se recibió el paymentID.");
+        }
+
+        $paymentID = $_GET['paymentID'];
+
+        // Obtener detalles del pago
+        $venta = curl_init("https://api-m.sandbox.paypal.com/v1/payments/payment/$paymentID");
+        curl_setopt($venta, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($venta, CURLOPT_HTTPHEADER, [
+            "Content-Type: application/json",
+            "Authorization: Bearer $AccessToken" // CORRECCIÓN: Se agrega espacio después de "Bearer"
+        ]);
+
+        $RespuestaVenta = curl_exec($venta);
+
         
-    </tbody>
-</table>
 
-<?php }else{ ?>
-    <div class="alert alert-success">
-        No hay productos en el carrito
+        // Manejo de errores en cURL
+        if (curl_errno($venta)) {
+            die("cURL Error: " . curl_error($venta));
+        }
+
+        //curl_close($venta);
+
+        // Mostrar la datos de la API de PayPal
+
+        $objDatosTransaccion=json_decode($RespuestaVenta);
+
+        $state=$objDatosTransaccion->state;
+        $email=$objDatosTransaccion->payer->payer_info->email;
+        $total=$objDatosTransaccion->transactions[0]->amount->total;
+        $currency=$objDatosTransaccion->transactions[0]->amount->currency;
+        $custom=$objDatosTransaccion->transactions[0]->custom;
+
+        
+
+        $clave=explode("#", $custom);
+
+        $SID=$clave[0];
+        $claveVenta=$clave[1];
+
+        curl_close($venta);
+        curl_close($Login);
+
+        if($state=="approved"){
+            $mensajePaypal="<h3>Pago aprobado</h3>";
+
+            $sentencia=$enlace->prepare("UPDATE `tblventas` SET `PaypalDatos` = ?, `Status` = 'Aprobado' WHERE `tblventas`.`ID` = ?;");
+            // Enlazamos parámetros con `bind_param()`
+            $sentencia->bind_param("si", $RespuestaVenta , $claveVenta);
+            $sentencia->execute();
+
+            $sentencia=$enlace->prepare("UPDATE `tblventas` SET `Status` = 'Completado' WHERE `ClaveTransaccion` = ? AND `Total` = ? AND `ID` = ?");
+            // Enlazamos parámetros con `bind_param()`
+            $sentencia->bind_param("idi", $SID, $total , $claveVenta);
+            $sentencia->execute();
+
+            $completado=$sentencia->affected_rows;
+
+            //session_destroy();    
+
+        }else{
+            $mensajePaypal="<h3>Hay un problema con el pago de paypal</h3>";
+        }
+
+?>
+
+<div class="jumbotron" align="center">
+    <h1 class="display-4">Pago procesado:</h1>
+    <hr class="my-4">
+    <p class="lead"><?php echo $mensajePaypal; ?></p>
+    <p>
+        <?php
+            if($completado>=1){
+                $sentencia=$enlace->prepare("SELECT * FROM tbldetalleventa, tblproductos WHERE tbldetalleventa.IdProducto=tblproductos.IDProducto AND tbldetalleventa.IdVenta=?;");
+                // Enlazamos parámetros con `bind_param()`
+                $sentencia->bind_param("i", $claveVenta);
+                $sentencia->execute();
+                $resultado = $sentencia->get_result(); 
+                $listaProductos=$resultado->fetch_all(MYSQLI_ASSOC); 
+                session_destroy();   
+                //print_r($listaProductos);
+            }else{
+    
+            }
+        ?>
+
+    </p>
 </div>
-<?php  } ?>
+
 <footer>
         <section class="pie01">
             <div class="container">

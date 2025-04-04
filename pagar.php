@@ -38,6 +38,21 @@ require_once 'conexion.php';
         font-size: 1.1em;
         margin-bottom: 10px;
     }
+
+     /* Media query for mobile viewport */
+     @media screen and (max-width: 400px) {
+        #paypal-button-container {
+            width: 100%;
+        }
+    }
+    
+    /* Media query for desktop viewport */
+    @media screen and (min-width: 400px) {
+        #paypal-button-container {
+            width: 250px;
+            display: inline-block;
+        }
+    }
 </style>
 
 </head>
@@ -71,74 +86,107 @@ require_once 'conexion.php';
 <br>
 <br>
 <br>
-<h3 class="text-center">Productos del carrito</h3>
 
-<a href="">Carrito (<?php echo (empty($_SESSION['CARRITO'])?0:count($_SESSION['CARRITO']));?>)</a>
 
-<?php if(!empty($_SESSION['CARRITO'])) {; ?>
-
-<table class="table table-light table-bordered">
-    <tbody>
-        <tr>
-            <th width="40%">Descripción</th>
-            <th width="15%" class="text-center">Cantidad</th>
-            <th width="20%" class="text-center">Precio</th>
-            <th width="20%" class="text-center">Total</th>
-            <th width="5%">Acción</th>
-        </tr>
-        <?php $total=0; ?>
-        <?php foreach($_SESSION['CARRITO'] as $indice=>$producto){ ?>
-        <tr>
-            <td width="40%"><?php echo $producto['NOMBRE']?></td>
-            <td width="15%" class="text-center"><?php echo $producto['CANTIDAD']?></td>
-            <td width="20%" class="text-center">C$ <?php echo $producto['PRECIO']?></td>
-            <td width="20%" class="text-center">C$ <?php echo number_format($producto['PRECIO']*$producto['CANTIDAD'],2) ?></td>
-            <td width="5%"> 
-                <form action="mostrarcarrito.php" method="post">
-                    <input type="hidden" name="id" value="<?php echo $producto['ID'] ?>">
-                    <button
-                    class="btn btn-danger"
-                    type="submit"
-                    name="btnAccion"
-                    value="Eliminar"
-                    >Eliminar</button>
-                </form>
-            </td>
-            
-        </tr>
-        <?php $total=$total+($producto['PRECIO']*$producto['CANTIDAD']); ?>
-        <?php } ?>
-        <tr>
-            <td colspan="3" align="right"><h3>Total</h3></td>
-            <td align="right"><h3><?php echo number_format($total,2);?></h3></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td colspan="5">
-                <form action="pagar.php" method="post">
-                    <div class="alert alert-success" role="alert">
-                        <div class="form-group">
-                            <label for="my-input">Correo</label>
-                            <input id="email" class="form-control" type="email" name="email" placeholder="Escribe tu correo" required>
-                        </div>
-                        <small id="emailhelp" class="form-text text-muted">
-                            Los productos se enviaran a este correo.
-                        </small>
-                    </div>
-                    <button class="btn btn-primary btn-lg btn-block" type="submit" name="btnAccion">Proceder a pagar</button>
-                </form>
-                
-            </td>
-        </tr>
+<?php
+if($_POST){
+    $total=0;
+    $SID=session_id();
+    $Correo=$_POST['email'];
+    foreach($_SESSION['CARRITO'] as $indice=>$producto){
+        $total=$total+($producto['PRECIO']*$producto['CANTIDAD']);
         
-    </tbody>
-</table>
+    }
+    // Preparamos la consulta con `?` en lugar de `:parametro`
+    $sentencia = $enlace->prepare("INSERT INTO tblventas 
+    (ClaveTransaccion, PaypalDatos, Fecha, Correo, Total, Status) 
+    VALUES (?, '', NOW(), ?, ?, 'Pendiente')");
 
-<?php }else{ ?>
-    <div class="alert alert-success">
-        No hay productos en el carrito
+    // Verificamos que la consulta se haya preparado correctamente
+    if ($sentencia === false) {
+    die("Error en la consulta: " . $enlace->error);
+    }
+
+    // Enlazamos parámetros con `bind_param()`
+    $sentencia->bind_param("ssd", $SID, $Correo, $total);
+
+    $sentencia->execute();
+    $idVenta = $enlace->insert_id;
+
+    foreach($_SESSION['CARRITO'] as $indice=>$producto){
+        $sentencia = $enlace->prepare("INSERT INTO tbldetalleventa 
+        (IdVenta, IdProducto, PrecioUnitario, Cantidad, Comprado) 
+        VALUES (?, ?, ?, ?, '0')");
+
+        $sentencia->bind_param("iidd", $idVenta, $producto['ID'], $producto['PRECIO'], $producto['CANTIDAD']);
+        $sentencia->execute();
+    }
+}
+?>
+
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+
+<div class="jumbotron" align="center">
+    <h1 class="display-4">LISTO PARA PAGAR!</h1>
+    <hr class="my-4">
+    <p class="lead">El monto de tu pedido es:
+        <h3>C$ <?php echo number_format($total,2); ?></h3> 
+        <div id="paypal-button-container"></div>
+    </p>
+    <p>Esperando confirmación del pago <br>
+    <strong>Para aclaraciones | ventas.jabonkita@gmail.com</strong>
+    </p>
 </div>
-<?php  } ?>
+
+<script>
+    paypal.Button.render({
+        env: 'sandbox', // sandbox | production
+        style: {
+            label: 'checkout',  // checkout | credit | pay | buynow | generic
+            size:  'responsive', // small | medium | large | responsive
+            shape: 'pill',   // pill | rect
+            color: 'gold'   // gold | blue | silver | black
+        },
+ 
+        // PayPal Client IDs - replace with your own
+        // Create a PayPal app: https://developer.paypal.com/developer/applications/create
+ 
+        client: {
+            sandbox:    'Aci0X-JgYogHdef0PMy9SNngabzbVHytAkJ8JLH-GQhzca-ie0w9ByVXFnFdc1YsdR_9ZOFexkm3-7gC',
+            production: ''
+        },
+ 
+        // Wait for the PayPal button to be clicked
+        
+
+        payment: function(data, actions) {
+            return actions.payment.create({
+                payment: {
+                    transactions: [
+                        {
+                            amount: { total: '<?php echo $total; ?>', currency: 'USD' }, 
+                            description:"Compra de productos a Jabon Kita: $<?php echo number_format($total); ?>",
+                            custom:"<?php echo $SID ?>#<?php echo $idVenta ?>"
+                        }
+                    ]
+                }
+            });
+        },
+ 
+        // Wait for the payment to be authorized by the customer
+ 
+        onAuthorize: function(data, actions) {
+            return actions.payment.execute().then(function() {
+                console.log(data);
+                window.location="verificador.php?paymentToken="+data.paymentToken+"&paymentID="+data.paymentID;
+            });
+        }
+    
+    }, '#paypal-button-container');
+ 
+</script>
+
+
 <footer>
         <section class="pie01">
             <div class="container">
