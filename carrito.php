@@ -1,77 +1,101 @@
 <?php
 session_start();
+$mensaje = "";
 
-$mensaje="";
-
-// Verificar si se ha enviado el ID del producto
 if (isset($_POST['btnAccion'])) {
-    
-    switch($_POST['btnAccion']){
+    switch ($_POST['btnAccion']) {
         case 'Agregar':
-            if(is_numeric($_POST['id'])){
-                $ID=$_POST['id'];
-                $mensaje.="Ok id Correcto ".$ID."<br/>";
+            $ID = $_POST['id'];
+            $NOMBRE = $_POST['nombre'];
+            $CANTIDAD = $_POST['cantidad'];
+            $PRECIO = $_POST['precio'];
+
+            if (!isset($_SESSION['CARRITO'])) {
+                $_SESSION['CARRITO'] = array();
             }
-            else{
-                $mensaje.="Id Incorrecto ".$ID."<br/>";
-            }
-                if(is_string($_POST['nombre'])){
-                    $NOMBRE=$_POST['nombre'];
-                    $mensaje.="Ok nombre Correcto ".$NOMBRE."<br/>";
-                }else{$mensaje.="Nombre Incorrecto ".$NOMBRE."<br/>";    break;}
 
-                if(is_numeric($_POST['cantidad'])){
-                    $CANTIDAD=$_POST['cantidad'];
-                    $mensaje.="Ok cantidad Correcto ".$CANTIDAD."<br/>";
-                }else{$mensaje.="Cantidad Incorrecta ".$CANTIDAD."<br/>";    break;}
+            $productoExistente = false;
 
-                if(is_numeric($_POST['precio'])){
-                    $PRECIO=$_POST['precio'];
-                    $mensaje.="Ok precio Correcto ".$PRECIO."<br/>";
-                }else{$mensaje.="Precio Incorrecto ".$PRECIO."<br/>";    break;}
-
-            if(!isset($_SESSION['CARRITO'])){
-                $producto=array(
-                    'ID'=>$ID,
-                    'NOMBRE'=>$NOMBRE,
-                    'CANTIDAD'=>$CANTIDAD,
-                    'PRECIO'=>$PRECIO,
-                );
-                $_SESSION['CARRITO'][0]=$producto;
-                $mensaje= "Producto agregado al carrito";
-            }else{
-                $idProductos=array_column($_SESSION['CARRITO'],"ID");
-                if(in_array($ID, $idProductos)){
-                    echo "<script>alert('El producto ya ha sido seleccionado...');</script>";
-
-                }else{
-                $NumeroProductos=count($_SESSION['CARRITO']);
-                $producto=array(
-                    'ID'=>$ID,
-                    'NOMBRE'=>$NOMBRE,
-                    'CANTIDAD'=>$CANTIDAD,
-                    'PRECIO'=>$PRECIO,
-                );
-                $_SESSION['CARRITO'][$NumeroProductos]=$producto;
-                $mensaje= "Producto agregado al carrito";
+            foreach ($_SESSION['CARRITO'] as &$producto) {
+                if ($producto['ID'] == $ID) {
+                    // Si el producto ya existe, aumentar la cantidad
+                    $producto['CANTIDAD'] += $CANTIDAD;
+                    $productoExistente = true;
+                    $mensaje = "Cantidad actualizada en el carrito";
+                    break;
                 }
             }
-            
-        break;
+            unset($producto); // Evitar problemas con referencias en foreach
+
+            if (!$productoExistente) {
+                // Agregar un nuevo producto solo si no existía antes
+                $_SESSION['CARRITO'][] = array(
+                    'ID' => $ID,
+                    'NOMBRE' => $NOMBRE,
+                    'CANTIDAD' => $CANTIDAD,
+                    'PRECIO' => $PRECIO
+                );
+                $mensaje = "Producto agregado al carrito";
+            }
+            break;
+
         case 'Eliminar':
-            if(is_numeric($_POST['id'])){
-                $ID=$_POST['id'];
-                foreach($_SESSION['CARRITO'] as $indice=>$producto){
-                    if($producto['ID']==$ID){
+            if (isset($_POST['id'])) {
+                $ID = $_POST['id'];
+                foreach ($_SESSION['CARRITO'] as $indice => $producto) {
+                    if ($producto['ID'] == $ID) {
                         unset($_SESSION['CARRITO'][$indice]);
-                        
+                        $_SESSION['CARRITO'] = array_values($_SESSION['CARRITO']); // Reindexar array
+                        $mensaje = "Producto eliminado del carrito";
+                        break;
                     }
                 }
             }
-            else{
-                $mensaje.="Id Incorrecto ".$ID."<br/>";
+            break;
+
+        case 'Aumentar':
+            if (isset($_POST['id'])) {
+                $ID = $_POST['id'];
+                foreach ($_SESSION['CARRITO'] as $indice => $producto) {
+                    if ($producto['ID'] == $ID) {
+                        $_SESSION['CARRITO'][$indice]['CANTIDAD'] += 1;
+                        $mensaje = "Cantidad aumentada";
+                        break;
+                    }
+                }
             }
-        break;
+            break;
+
+        case 'Disminuir':
+            if (isset($_POST['id'])) {
+                $ID = $_POST['id'];
+                foreach ($_SESSION['CARRITO'] as $indice => $producto) {
+                    if ($producto['ID'] == $ID && $producto['CANTIDAD'] > 1) {
+                        $_SESSION['CARRITO'][$indice]['CANTIDAD'] -= 1;
+                        $mensaje = "Cantidad disminuida";
+                        break;
+                    }
+                }
+            }
+            break;
+
+        case 'Actualizar':
+            // Lógica de actualización manual de la cantidad
+            if (isset($_POST['id']) && isset($_POST['cantidad'])) {
+                $id = $_POST['id'];
+                $nuevaCantidad = intval($_POST['cantidad']);
+                if ($nuevaCantidad > 0) {
+                    foreach ($_SESSION['CARRITO'] as &$producto) {
+                        if ($producto['ID'] == $id) {
+                            $producto['CANTIDAD'] = $nuevaCantidad;
+                            $mensaje = "Cantidad actualizada en el carrito";
+                            break;
+                        }
+                    }
+                }
+            }
+            break;
     }
 }
+
 ?>
