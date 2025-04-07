@@ -176,7 +176,16 @@ require_once 'conexion.php';
             }else{
     
             }
+
         ?>
+
+            Este es su código de transacción guardar para generar su factura: <br>
+            <?php print_r($SID);?>
+
+            <form action="facturacion.php" method="POST">
+                <input type="hidden" name="claveTransaccion" value="<?php echo $SID; ?>">
+                <button type="submit">Generar Factura</button>
+            </form>
 
     </p>
 </div>
