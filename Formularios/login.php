@@ -32,8 +32,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: administrar.php"); // Redirigir al panel de administración
         exit;
     } else {
-        // Credenciales inválidas
-        echo "<script>alert('Usuario o contraseña incorrectos.');</script>";
+        echo '
+        <style>
+        /* Centramos el modal verticalmente */
+        .modal-dialog {
+            margin-top: 15%;
+            width: 350px;
+        }
+        </style>
+    
+        <!-- Modal Bootstrap 3 -->
+        <div class="modal fade" id="codigoModal" tabindex="-1" role="dialog" aria-labelledby="codigoModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header" style="background-color: #f2dede; border-bottom: 1px solid #ebccd1;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="codigoModalLabel" style="color: #a94442;">Aviso</h4>
+              </div>
+              <div class="modal-body" style="color: #a94442;">
+                Lo sentimos las credenciales ingresadas no son correctas.
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Aceptar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    
+        <script>
+        window.onload = function() {
+            $("#codigoModal").modal("show");
+        };
+        </script>
+        ';
     }
 
     $stmt->close();
