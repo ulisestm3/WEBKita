@@ -324,9 +324,11 @@
         }
 
         input[type="number"] {
-            -moz-appearance: textfield;
-        }
-    </style>
+        -moz-appearance: textfield; /* Para Firefox */
+        appearance: textfield;      /* Para otros navegadores */
+    }
+
+</style>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
