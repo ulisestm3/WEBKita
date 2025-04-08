@@ -160,41 +160,56 @@ if (!isset($_SESSION['usuario'])) {
     </div>
 </div>
 
-    <!-- FOOTER -->
-    <footer>
-        <section class="pie01">
+    <!-- INICIO PIE DE PÁGINA -->
+<footer>
+	       <!--Sección 01-->
+	       <section class="pie01">
             <div class="container">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h4>Mapa del Sitio</h4>
+               <div class="row" text align="left"> <!--Inicio de la 1ra Fila-->
+                  <!--Mapa del Sitio-->
+                  <div class="col-md-6">
+                     <h4>Mapa del Sitio</h4>
+                     <dl>
                         <dl>
-                            <dt><a href="quienessomos.html">Quiénes Somos</a></dt>
-                            <dt><a href="PropositoYValores.html">La Empresa</a></dt>
-                            <dt><a href="vehiculos.html">Vehículos</a></dt>
-                            <dt><a href="contactenos.html">Contáctenos</a></dt>
+                           <!--<dt><a href="index.html">Inicio</a></dt>-->
+                           <dt><a href="quienessomos.html">Quiénes Somos</a></dt>
+                           <dt><a href="PropositoYValores.html">La Empresa</a></dt>
+                           <dt><a href="Productos.html">Productos</a></dt>
+                           <dt><a href="contactenos.html">Contáctenos</a></dt>
                         </dl>
-                    </div>
-                    <div class="col-md-6">
-                        <h4>Datos de Contacto</h4>
-                        <address>
-                            Dirección: Semáforos de Villa Fontana<br>
-                            <abbr title="phone">Teléfono: </abbr>(+505) 2234-5678<br>
-                            E-mail:<a href="mailto:info@kia.com.ni"> info@kia.com.ni</a><br>
-                            Horario de atención: 8:00 a.m - 5:00 p.m<br>
-                            Facebook ׀ Twitter
-                        </address>
-                    </div>
-                </div>
-            </div>
+                     </dl>
+                  </div>
+                  <!--Datos de Contactos-->
+                  <div class="col-md-6">
+                     <h4>Datos de Contacto</h4>
+                     <address>
+                         Dirección: Semáforos de Villa Fontana<br> 
+                         <abbr title="phone">Teléfono: </abbr>(+505) 2234-5678<br> 
+                         E-mail:<a href="ventas.jabonkita@gmail.com"> ventas.jabonkita@gmail.com</a><br> 
+                         Horario de atención: 8:00 a.m - 5:00 p.m<br> 
+                         Facebook ׀ Twitter 
+                     </address>
+                  </div>
+               </div><!--Cierre de la Fila-->
+           </div>
         </section>
-        <section class="pie02">
-            <div class="container">
-                &copy; Copyright 2025 Kita
-            </div>
-        </section>
-    </footer>
+ 
+	
+	       <!--Sección 02-->
+	       <section class="pie02">
+	           <div class="container">
+			     &copy; Copyright 2025 Kita	
+		       </div>
+	       </section>
+</footer>
+<!-- FIN PIE DE PÁGINA -->
 
-    <script src="../js/jquery-1.11.3.min.js"></script>
-    <script src="../js/bootstrap.js"></script>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+    <script src="js/jquery-1.11.3.min.js"></script>
+
+    <!-- Include all compiled plugins (below), or include individual files as needed --> 
+    <script src="js/bootstrap.js"></script>
+
 </body>
 </html>

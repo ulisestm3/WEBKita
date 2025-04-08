@@ -97,33 +97,38 @@ $resultado = mysqli_query($enlace, $sql);
         </div>
     </section>
     <footer>
-        <section class="pie01">
-            <div class="container">
-                <div class="row" text align="left">
-                    <div class="col-md-6">
-                        <h4>Mapa del Sitio</h4>
-                        <dl>
-                            <dl>
-                                <dt><a href="quienessomos.html">Quiénes Somos</a></dt>
-                                <dt><a href="PropositoYValores.html">La Empresa</a></dt>
-                                <dt><a href="Productos.html">Vehículos</a></dt>
-                                <dt><a href="contactenos.html">Contáctenos</a></dt>
-                            </dl>
-                        </dl>
-                    </div>
-                    <div class="col-md-6">
-                        <h4>Datos de Contacto</h4>
-                        <address>
-                            Dirección: Semáforos de Villa Fontana<br>
-                            <abbr title="phone">Teléfono: </abbr>(+505) 2234-5678<br>
-                            E-mail:<a href="mailto:info@kia.com.ni"> info@kia.com.ni</a><br>
-                            Horario de atención: 8:00 a.m - 5:00 p.m<br>
-                            Facebook ׀ Twitter
-                        </address>
-                    </div>
-                </div>
-            </div>
-        </section>
+      <!--Sección 01-->
+      <section class="pie01">
+	           <div class="container">
+		          <div class="row" text align="left"> <!--Inicio de la 1ra Fila-->
+			         <!--Mapa del Sitio-->
+			         <div class="col-md-6">
+				        <h4>Mapa del Sitio</h4>
+				        <dl>
+					       <dl>
+						      <!--<dt><a href="index.html">Inicio</a></dt>-->
+						      <dt><a href="quienessomos.html">Quiénes Somos</a></dt>
+						      <dt><a href="PropositoYValores.html">La Empresa</a></dt>
+						      <dt><a href="Productos.html">Productos</a></dt>
+						      <dt><a href="contactenos.html">Contáctenos</a></dt>
+					       </dl>
+				        </dl>
+			         </div>
+			         <!--Datos de Contactos-->
+			         <div class="col-md-6">
+				        <h4>Datos de Contacto</h4>
+				        <address>
+				            Dirección: Semáforos de Villa Fontana<br> 
+				            <abbr title="phone">Teléfono: </abbr>(+505) 2234-5678<br> 
+				            E-mail:<a href="ventas.jabonkita@gmail.com"> ventas.jabonkita@gmail.com</a><br> 
+				            Horario de atención: 8:00 a.m - 5:00 p.m<br> 
+                            Facebook ׀ Twitter 
+				        </address>
+			         </div>
+		          </div><!--Cierre de la Fila-->
+		      </div>
+	       </section>
+	
 
         <section class="pie02">
             <div class="container">
