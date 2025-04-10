@@ -114,9 +114,10 @@ if ($claveTransaccion) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>KITA | Factura Electronica</title>
     <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/stilo.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
     <link href="js/mai.js" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+    
     <style>
         .card-custom {
             border: 1px solid #ddd;
@@ -216,18 +217,21 @@ if ($claveTransaccion) {
             z-index: 1000;
             /* Asegura que esté por encima de otros elementos */
         }
+
         .button-container {
             display: flex;
             justify-content: center;
-            margin-top: 20px; /* Ajusta según sea necesario */
+            margin-top: 20px;
+            /* Ajusta según sea necesario */
         }
     </style>
 </head>
 
 <body>
-
+    <!-- INICIO DEL MENU DE NAVEGACIÓN -->
     <nav class="navbar navbar-default menu-fixed">
         <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#defaultNavbar1" aria-expanded="false">
                     <span class="sr-only">Toggle navigation</span>
@@ -235,22 +239,32 @@ if ($claveTransaccion) {
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="index.html" class="navbar-brand">KITA</a>
+                <a href="index.php" class="navbar-brand">KITA</a>
             </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="defaultNavbar1">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="index.html">Inicio</a></li>
-                    <li><a href="QuienesSomos.html">Quiénes Somos</a></li>
-                    <li><a href="Productos.php">Productos</a></li>
-                    <li><a href="PropositoYValores.html">Proposito Y Valores</a></li>
-                    <li><a href="Contactenos.html">Contáctenos</a></li>
+                    <li><a href="index.php">Inicio</a></li>
+                    <li><a href="nosotros.php">Nosotros</a></li>
+                    <li><a href="productos.php">Productos</a></li>
+                    <li><a href="consulta.php">Consulta</a></li>
+                    <li><a href="contactenos.php">Contáctenos</a></li>
                     <li><a href="Formularios/login.php">Administrar</a></li>
-                    <li><a href="mostrarcarrito.php">Carrito (<?php echo (empty($_SESSION['CARRITO']) ? 0 : count($_SESSION['CARRITO'])); ?>)</a></li>
-                </ul>
+                    <li>
+                        <a href="mostrarcarrito.php">
+                            <span class="cart-icon">
+                                <i class="fas fa-shopping-cart"></i> <!-- Icono de carrito -->
+                                <span class="cart-count"><?php echo (empty($_SESSION['CARRITO']) ? 0 : count($_SESSION['CARRITO'])); ?></span> <!-- Contador -->
+                            </span>
+                        </a>
+                    </li>
             </div>
         </div>
     </nav>
+    <!-- FIN DEL MENÚ DE NAVEGACIÓN -->
 
+    <!--CONTENIDO DE LA PÁGINA-->
+    <br><br><br>
     <section class="Factura" id="facturaSection">
 
         <div class="factura">
@@ -339,18 +353,28 @@ if ($claveTransaccion) {
     <div class="button-container">
         <button onclick="downloadPDF()" class="btn btn-primary">Descargar Factura como PDF</button>
     </div>
+    <br><br><br>
 
-</body>
+        <!--FIN DEL CONTENIDO DE LA PÁGINA-->
 
-<script>
+    <script>
         function downloadPDF() {
             const element = document.getElementById('facturaSection');
             const opt = {
                 margin: 1,
                 filename: 'factura.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                image: {
+                    type: 'jpeg',
+                    quality: 0.98
+                },
+                html2canvas: {
+                    scale: 2
+                },
+                jsPDF: {
+                    unit: 'in',
+                    format: 'letter',
+                    orientation: 'portrait'
+                }
             };
 
             // New Promise-based usage:
@@ -358,8 +382,14 @@ if ($claveTransaccion) {
         }
     </script>
 
-<script src="js/jquery-1.11.3.min.js"></script>
-<script src="js/bootstrap.js"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <!-- Slick Carousel JS -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.js"></script>
+
+</body>
 
 </html>
 

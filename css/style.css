@@ -1,0 +1,393 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+body {
+	background-color: #fefaf0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+nav{
+	
+	/*Animación al menu*/
+	-webkit-transition: all ease .5s;
+	-o-transition: all ease .5s;
+	transition: all ease .5s
+
+}
+
+.navbar-default{
+	background-color: #C3B091;
+	font: bold;
+	border: 0px;
+	margin-bottom: 0px;
+	border-radius: 0px;
+}  
+
+.navbar{
+	border-radius: 0px;
+
+}
+
+.navbar-default .navbar-nav > li > a{
+	color: #fff;
+	font: bold;
+
+}  
+
+.menu-fixed{
+	position: fixed;
+	z-index: 1000;
+	top:0;
+	/*left: 0;*/
+	width:100%;
+	/*max-width: 1000px;*/
+	box-shadow:0px 4px 3px rgba(0,0,0,.5);
+}
+
+.menu-fixed ul li a{
+	padding:15px 20px;
+
+}
+
+.navbar-default .navbar-nav > li > a:hover {
+	color: #BF5E0A;
+
+}  
+
+.navbar-default .navbar-brand {
+	color: #FFF;
+
+}
+
+.navbar-default .navbar-brand:hover {
+	color: #FFF;
+}
+
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+    color: #248A88;
+    background-color: rgba(0, 0, 0, .075);
+}
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > a:hover {
+	color: #BF5E0A;
+
+} 
+
+/* Estilo general para el slider */
+
+.banner img {
+    width: 80%;
+    height: auto;
+    max-height: 600px;  /* Ajusta según tu necesidad */
+}
+
+#carousel1 {
+    max-width: 100%;
+    margin: 0 auto;
+	margin-top: 55px;
+}
+
+/* Alto fijo para el slider */
+.carousel-inner,
+.carousel-inner .item {
+    height: 300px; /* Define el alto deseado para el banner */
+    background-color: #ccc; /* Fondo opcional mientras cargan las imágenes */
+}
+
+/* Ajustar las imágenes al alto del slider */
+.carousel-inner .item img {
+    max-width: 100%; /* Asegura que la imagen no exceda el ancho del contenedor */
+    height: auto; /* Mantener la proporción de la imagen */
+    display: block; /* Elimina el margen inferior predeterminado de las imágenes */
+    margin: 0 auto; /* Centra horizontalmente */
+}
+
+/* Estilo para los indicadores */
+.carousel-indicators {
+    bottom: 8px;
+}
+
+/* Estilo para los botones de navegación */
+.carousel-control {
+    opacity: 0.8;
+    font-size: 20px;
+}
+
+
+/* Pie de página 1 */
+.pie01 {
+    color: #FFF;
+    background-color: #228B22;
+	padding-bottom: 10px;
+    position: bottom; /* Fija el footer al fondo de la página */
+    bottom: 0; /* Coloca el footer en la parte inferior */
+    width: 100%; /* Asegura que ocupe todo el ancho de la página */
+}
+
+.pie01 a {
+    color: #FFF;
+}
+
+.pie01 a:hover {
+    color: #d3ec8f;
+}
+
+/* Pie de página 2 */
+.pie02 {
+    color: #FFF;
+    background-color: rgba(0, 0, 0, 1.00);
+    padding: 15px;
+    padding-bottom: 15px;
+    position: bottom; /* Fija el footer al fondo de la página */
+    bottom: 0; /* Coloca el footer en la parte inferior */
+    width: 100%; /* Asegura que ocupe todo el ancho de la página */
+}
+
+
+
+.con_tit::after {
+    content: '';
+    display: block;
+    width: 70px;
+    height: 2px;
+    background: #bb162b;
+    margin-top: 18px;
+}
+
+
+/* Estilo para las cards pequeñas en Index */
+.card-small {
+	border: none;
+	border-radius: 10px;
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+	max-width: 200px; /* Limita el ancho máximo de la card */
+	margin: auto; /* Centra la card horizontalmente */
+}
+
+.card-small:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Contenedor de la imagen */
+.image-container {
+	position: relative;
+	overflow: hidden; /* Oculta cualquier desbordamiento */
+	border-radius: 10px 10px 0 0; /* Redondea las esquinas superiores */
+}
+
+/* Estilo para las imágenes pequeñas */
+.img-small {
+	width: 100%; /* Ajusta el ancho de la imagen al contenedor */
+	height: 150px; /* Altura fija para las imágenes */
+	object-fit: cover; /* Ajusta la imagen sin distorsionarla */
+}
+
+/* Estilo para el texto truncado */
+.text-truncate {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* Botón más pequeño */
+.btn-sm {
+	font-size: 0.875rem;
+	padding: 0.375rem 0.75rem;
+}
+
+/* Alineación central de las cards */
+.justify-content-center {
+	justify-content: center !important;
+}
+
+.slider-container .card {
+	margin: 0 15px; /* Ajusta el margen entre las tarjetas */
+}
+.slick-slide {
+	margin: 0 10px; /* Ajusta el margen entre los slides */
+}
+
+
+/* Sección Propósito y Valores */
+.seccion {
+    padding: 50px 20px;
+    background-color: #f9f5ec; /* Tono caqui claro */
+    text-align: center;
+}
+
+.titulo-seccion {
+    font-size: 2em;
+    color: #6d4c41; /* Marrón suave */
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.proposito h3,
+.valores h3 {
+    color: #4b382e; /* Marrón más oscuro */
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.proposito p {
+    font-size: 1.1em;
+    color: #5c4033; /* Marrón tierra */
+    line-height: 1.6;
+}
+
+.lista-valores {
+    list-style: none;
+    padding: 0;
+}
+
+.lista-valores li {
+    background: #e8dcc3; /* Beige suave */
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 1.1em;
+    color: #3e2a1a;
+    text-align: left;
+}
+
+/* Estilo general para el icono del carrito */
+.cart-icon {
+	position: relative;
+	display: inline-block;
+}
+
+/* Estilo para el icono de Font Awesome */
+.cart-icon i {
+	font-size: 24px; /* Tamaño del icono */
+	color: #333; /* Color del icono */
+}
+
+/* Estilo para el contador */
+.cart-count {
+	position: absolute;
+	top: -10px; /* Ajusta la posición vertical */
+	right: -10px; /* Ajusta la posición horizontal */
+	background-color: red; /* Fondo rojo */
+	color: white; /* Texto blanco */
+	font-size: 12px; /* Tamaño del texto */
+	border-radius: 50%; /* Hace el fondo circular */
+	padding: 3px 6px; /* Espaciado interno */
+	font-weight: bold; /* Fuente negrita */
+}
+
+
+/* Estilo para Productos */
+.card-custom {
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	margin-bottom: 20px;
+}
+.card-custom img {
+	object-fit: cover;
+	height: 100px; /* Altura inicial de la imagen */
+	transition: transform 0.3s ease, height 0.3s ease; /* Transición suave */
+}
+
+.card-custom .card-body {
+	padding: 15px;
+}
+.card-custom .card-title {
+	font-size: 1.1em;
+	margin-bottom: 10px;
+}
+
+/* Estilo para Consulta */
+.cosulta-form {
+	width: 450px;
+	margin: 100px auto 50px auto;
+	padding: 30px;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	background-color: #f9f9f9;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cosulta-form .form-group {
+	margin-bottom: 20px;
+}
+
+.cosulta-form .btn-success {
+	width: 100%;
+}
+
+
+/* Estilo para administrat | Login */
+.login-form {
+	width: 350px;
+	margin: 100px auto 50px auto;
+	padding: 30px;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	background-color: #f9f9f9;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.login-form .form-group {
+	margin-bottom: 20px;
+}
+
+.login-form .btn-success {
+	width: 100%;
+}
+
+/* Estilo para Mostrar carrito */
+.card-custom {
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	margin-bottom: 20px;
+}
+.card-custom img {
+	object-fit: cover;
+	height: 200px;
+	transition: transform 0.3s ease, height 0.3s ease;
+}
+.card-custom .card-body {
+	padding: 15px;
+}
+.card-custom .card-title {
+	font-size: 1.1em;
+	margin-bottom: 10px;
+}
+
+.card-custom img {
+	object-fit: cover;
+	height: 200px; /* Altura inicial de la imagen */
+	transition: transform 0.3s ease, height 0.3s ease; /* Transición suave */
+}
+
+/* Estilo para Administración */
+.container-agregar {
+    display: flex; /* Usa flexbox para organizar los elementos */
+    gap: 20px; /* Espacio entre los elementos */
+    justify-content: center; /* Centra los elementos horizontalmente */
+    align-items: center; /* Alinea los elementos verticalmente */
+    margin-top: 20px; /* Espacio superior opcional */
+        }
+
+        .img-agregar {
+            text-align: center; /* Alinea el contenido (imagen y texto) al centro */
+        }
+
+        .img-agregar img {
+            display: block; /* Asegura que la imagen esté en bloque */
+            margin: 0 auto; /* Centra la imagen dentro del contenedor */
+        }
+
+        .img-agregar h5 {
+            margin-top: 10px; /* Espacio entre la imagen y el texto */
+            font-size: 16px; /* Tamaño de fuente ajustable */
+            color: var(--color3); /* Usa un color consistente con tu diseño */
+        }

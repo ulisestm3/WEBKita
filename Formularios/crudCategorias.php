@@ -39,12 +39,22 @@
         exit();
     }
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Categorías</title>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>KITA | crudCategorías</title>
+    <!-- Bootstrap -->
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet" type="text/css">
+    <link href="js/mai.js" rel="stylesheet">
+    <!-- Incluye Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <style>
         :root {
             --color1: #987248;
@@ -211,7 +221,7 @@
         <h1>Gestión de Categorías</h1>
 
         <div class="text-center">
-        <a href="administrar.php"><img  src="../Images/administrar.png" alt="agregar articulo" width="60" height="60"> </a>
+        <a href="administrar.php"><img  src="../img/administrar.png" alt="agregar articulo" width="60" height="60"> </a>
         <h5>Administrar</h5>
         </div>
 
