@@ -1,76 +1,11 @@
 <?php
-include '../carrito.php';
+include 'carrito.php';
 
-//session_start(); // Inicia la sesión
-
-//Conexiona la bd
+// Conexión a la base de datos
 require_once 'conexion.php';
 
-if (!$enlace) {
-    die("Conexión fallida: " . mysqli_connect_error());
-}
-
-// Procesar el formulario de inicio de sesión
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $usuario = $_POST['txtUsuario'];
-    $password = $_POST['txtPassword'];
-
-    // Escapar entradas para prevenir inyecciones SQL
-    $usuario = mysqli_real_escape_string($enlace, $usuario);
-    $password = mysqli_real_escape_string($enlace, $password);
-
-    // Consulta para verificar las credenciales
-    $sql = "SELECT * FROM tblusuarios WHERE Usuario = ? AND Password = ?";
-    $stmt = $enlace->prepare($sql);
-    $stmt->bind_param("ss", $usuario, $password);
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-
-    if ($resultado->num_rows > 0) {
-        // Credenciales válidas
-        $_SESSION['usuario'] = $usuario; // Guardar el nombre de usuario en la sesión
-        header("Location: administrar.php"); // Redirigir al panel de administración
-        exit;
-    } else {
-        echo '
-        <style>
-        /* Centramos el modal verticalmente */
-        .modal-dialog {
-            margin-top: 15%;
-            width: 350px;
-        }
-        </style>
-
-        <!-- Modal Bootstrap 3 -->
-        <div class="modal fade" id="codigoModal" tabindex="-1" role="dialog" aria-labelledby="codigoModalLabel">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header" style="background-color: #f2dede; border-bottom: 1px solid #ebccd1;">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title" id="codigoModalLabel" style="color: #a94442;">Aviso</h4>
-              </div>
-              <div class="modal-body" style="color: #a94442;">
-                Lo sentimos las credenciales ingresadas no son correctas.
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Aceptar</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <script>
-        jQuery(document).ready(function() {
-            jQuery("#codigoModal").modal("show");
-        });
-        </script>
-        ';
-    }
-
-    $stmt->close();
-}
+$sql = "SELECT * FROM tblproductos WHERE Activo = 1";
+$resultado = mysqli_query($enlace, $sql);
 ?>
 
 <!DOCTYPE html>
@@ -80,11 +15,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>KITA | Login</title>
+    <title>KITA | Inicio</title>
     <!-- Bootstrap -->
-    <link href="../css/bootstrap.css" rel="stylesheet">
-    <link href="../css/style.css" rel="stylesheet" type="text/css">
-    <link href="js/mai.js" rel="stylesheet">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <!-- Slick Carousel CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
     <!-- Incluye Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -101,20 +38,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="../index.php" class="navbar-brand">KITA</a>
+                <a href="index.php" class="navbar-brand">KITA</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="defaultNavbar1">
                 <ul class="nav navbar-nav navbar-right">
-                    <!--  <li class="active"><a href="index.php">Inicio<span class="sr-only">(current)</span></a></li>-->
-                    <li><a href="../index.php">Inicio</a></li>
-                    <li><a href="../nosotros.php">Nosotros</a></li>
-                    <li><a href="../productos.php">Productos</a></li>
-                    <li><a href="../consulta.php">Consulta</a></li>
-                    <li><a href="../contactenos.php">Contáctenos</a></li>
-                    <li><a href="login.php">Administrar</a></li>
+                    <li><a href="index.php">Inicio</a></li>
+                    <li><a href="nosotros.php">Nosotros</a></li>
+                    <li><a href="productos.php">Productos</a></li>
+                    <li><a href="consulta.php">Consulta</a></li>
+                    <li><a href="contactenos.php">Contáctenos</a></li>
+                    <li><a href="Formularios/login.php">Administrar</a></li>
                     <li>
-                        <a href="../mostrarcarrito.php">
+                        <a href="mostrarcarrito.php">
                             <span class="cart-icon">
                                 <i class="fas fa-shopping-cart"></i> <!-- Icono de carrito -->
                                 <span class="cart-count"><?php echo (empty($_SESSION['CARRITO']) ? 0 : count($_SESSION['CARRITO'])); ?></span> <!-- Contador -->
@@ -136,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <div class="carousel-inner" role="listbox">
             <div class="item active">
-                <img src="../img/pic.jpg" alt="First slide image" class="d-block w-100">
+                <img src="img/pic.jpg" alt="First slide image" class="d-block w-100">
                 <div class="carousel-caption">
                     <h3></h3>
                     <p></p>
@@ -144,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
 
             <div class="item">
-                <img src="../img/pic1.jpg" alt="Second slide image" class="d-block w-100">
+                <img src="img/pic1.jpg" alt="Second slide image" class="d-block w-100">
                 <div class="carousel-caption">
                     <h3></h3>
                     <p></p>
@@ -152,7 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
 
             <div class="item">
-                <img src="../img/pic4.png" alt="Third slide image" class="d-block w-100">
+                <img src="img/pic4.png" alt="Third slide image" class="d-block w-100">
                 <div class="carousel-caption">
                     <h3></h3>
                     <p></p>
@@ -173,25 +109,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <!--CONTENIDO DE LA PÁGINA-->
 
+	<section id="productos" class="seccion">
+    <div class="container">
+        <h2 class="titulo-seccion">Nuestros Productos</h2>
 
-    <section>
+        <div class="slider-container">
+            <?php
+            if (mysqli_num_rows($resultado) > 0) {
+                while ($producto = mysqli_fetch_assoc($resultado)) {
+                    echo '<div class="card card-small shadow-sm">';
+                    echo '<div class="image-container overflow-hidden rounded-top">';
+                    echo '<img src="' . $producto['Img1'] . '" class="card-img-top img-small" alt="' . $producto['Nombre'] . '">';
+                    echo '</div>';
+                    echo '<div class="card-body d-flex flex-column justify-content-between">';
+                    echo '<h5 class="card-title text-truncate">' . $producto['Nombre'] . '</h5>';
+                    echo '<p class="card-text text-muted text-truncate">Código: ' . $producto['IDProducto'] . '</p>';
 
-    <div class="login-form">
-        <h2>Inicio de Sesión</h2>
-        <form action="" method="post">
-            <div class="form-group">
-                <label for="txtUsuario">Usuario</label>
-                <input type="text" class="form-control" id="txtUsuario" name="txtUsuario" required>
-            </div>
-            <div class="form-group">
-                <label for="txtPassword">Contraseña</label>
-                <input type="password" class="form-control" id="txtPassword" name="txtPassword" required>
-            </div>
-            <button type="submit" class="btn btn-success">Entrar</button>
-        </form>
+                    echo '<form action="detalleproducto.php" method="post" class="mt-auto">';
+                    echo '<input type="hidden" name="txtID" value="' . $producto['IDProducto'] . '">';
+                    echo '<button type="submit" class="btn btn-sm btn-success w-100">Ver detalle</button>';
+                    echo '</form>';
+                    echo '</div>';
+                    echo '</div>';
+                }
+            } else {
+                echo "<p class='text-center'>No se encontraron productos.</p>";
+            }
+            ?>
+        </div>
     </div>
-
-    </section>
+</section>
 
     <!--FIN DEL CONTENIDO DE LA PÁGINA-->
 
@@ -206,12 +153,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <h4>Mapa del Sitio</h4>
                         <dl>
                             <dl>
-                                <dt><a href="../index.php">Inicio</a></dt>
-                                <dt><a href="../nosotros.php">Nosotros</a></dt>
-                                <dt><a href="../productos.php">Productos</a></dt>
-                                <dt><a href="../consulta.php">Consulta</a></dt>
-                                <dt><a href="../contactenos.php">Contáctenos</a></dt>
-                                <dt><a href="login.php">Administrar</a></dt>
+                                <dt><a href="index.php">Inicio</a></dt>
+                                <dt><a href="nosotros.php">Nosotros</a></dt>
+                                <dt><a href="productos.php">Productos</a></dt>
+                                <dt><a href="consulta.php">Consulta</a></dt>
+                                <dt><a href="contactenos.php">Contáctenos</a></dt>
+                                <dt><a href="Formularios/login.php">Administrar</a></dt>
                             </dl>
                         </dl>
                     </div>
@@ -240,11 +187,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- FIN PIE DE PÁGINA -->
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="../js/jquery-1.11.3.min.js"></script>
+    <script src="js/jquery-1.11.3.min.js"></script>
     <!-- Slick Carousel JS -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="../js/bootstrap.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.slider-container').slick({
+                dots: true,
+                infinite: true,
+                speed: 300,
+                slidesToShow: 4,
+                slidesToScroll: 1,
+                responsive: [
+                    {
+                        breakpoint: 1024,
+                        settings: {
+                            slidesToShow: 3,
+                            slidesToScroll: 1,
+                            infinite: true,
+                            dots: true
+                        }
+                    },
+                    {
+                        breakpoint: 600,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 1
+                        }
+                    },
+                    {
+                        breakpoint: 480,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
 </body>
 
 </html>
