@@ -177,7 +177,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     	<!--CONTENIDO DE LA PÁGINA-->
 
     <section id="consulta" class="seccion">
-        <div class="cosulta-form">
+        <div class="login-form">
             <h2>Consulta de Compra</h2>
             <form action="" method="post">
                 <div class="form-group">
