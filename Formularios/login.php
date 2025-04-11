@@ -32,41 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: administrar.php"); // Redirigir al panel de administración
         exit;
     } else {
-        echo '
-        <style>
-        /* Centramos el modal verticalmente */
-        .modal-dialog {
-            margin-top: 15%;
-            width: 350px;
-        }
-        </style>
-
-        <!-- Modal Bootstrap 3 -->
-        <div class="modal fade" id="codigoModal" tabindex="-1" role="dialog" aria-labelledby="codigoModalLabel">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header" style="background-color: #f2dede; border-bottom: 1px solid #ebccd1;">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title" id="codigoModalLabel" style="color: #a94442;">Aviso</h4>
-              </div>
-              <div class="modal-body" style="color: #a94442;">
-                Lo sentimos las credenciales ingresadas no son correctas.
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Aceptar</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <script>
-        jQuery(document).ready(function() {
-            jQuery("#codigoModal").modal("show");
-        });
-        </script>
-        ';
+        $mostrarModal = true;
     }
 
     $stmt->close();
@@ -84,7 +50,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Bootstrap -->
     <link href="../css/bootstrap.css" rel="stylesheet">
     <link href="../css/style.css" rel="stylesheet" type="text/css">
-    <link href="js/mai.js" rel="stylesheet">
     <!-- Incluye Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -106,7 +71,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="defaultNavbar1">
                 <ul class="nav navbar-nav navbar-right">
-                    <!--  <li class="active"><a href="index.php">Inicio<span class="sr-only">(current)</span></a></li>-->
                     <li><a href="../index.php">Inicio</a></li>
                     <li><a href="../nosotros.php">Nosotros</a></li>
                     <li><a href="../productos.php">Productos</a></li>
@@ -173,24 +137,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <!--CONTENIDO DE LA PÁGINA-->
 
-
     <section>
-
-    <div class="login-form">
-        <h2>Inicio de Sesión</h2>
-        <form action="" method="post">
-            <div class="form-group">
-                <label for="txtUsuario">Usuario</label>
-                <input type="text" class="form-control" id="txtUsuario" name="txtUsuario" required>
-            </div>
-            <div class="form-group">
-                <label for="txtPassword">Contraseña</label>
-                <input type="password" class="form-control" id="txtPassword" name="txtPassword" required>
-            </div>
-            <button type="submit" class="btn btn-success">Entrar</button>
-        </form>
-    </div>
-
+        <div class="login-form">
+            <h2>Inicio de Sesión</h2>
+            <form action="" method="post">
+                <div class="form-group">
+                    <label for="txtUsuario">Usuario</label>
+                    <input type="text" class="form-control" id="txtUsuario" name="txtUsuario" required>
+                </div>
+                <div class="form-group">
+                    <label for="txtPassword">Contraseña</label>
+                    <input type="password" class="form-control" id="txtPassword" name="txtPassword" required>
+                </div>
+                <button type="submit" class="btn btn-success">Entrar</button>
+            </form>
+        </div>
     </section>
 
     <!--FIN DEL CONTENIDO DE LA PÁGINA-->
@@ -241,10 +202,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="../js/jquery-1.11.3.min.js"></script>
-    <!-- Slick Carousel JS -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="../js/bootstrap.js"></script>
+
+    <?php if (isset($mostrarModal) && $mostrarModal): ?>
+        <style>
+        /* Centramos el modal verticalmente */
+        .modal-dialog {
+            margin-top: 15%;
+            width: 350px;
+        }
+        </style>
+
+        <!-- Modal Bootstrap 3 -->
+        <div class="modal fade" id="codigoModal" tabindex="-1" role="dialog" aria-labelledby="codigoModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header" style="background-color: #f2dede; border-bottom: 1px solid #ebccd1;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="codigoModalLabel" style="color: #a94442;">Aviso</h4>
+              </div>
+              <div class="modal-body" style="color: #a94442;">
+                Lo sentimos las credenciales ingresadas no son correctas.
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Aceptar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <script>
+        jQuery(document).ready(function() {
+            jQuery("#codigoModal").modal("show");
+        });
+        </script>
+    <?php endif; ?>
 </body>
 
 </html>

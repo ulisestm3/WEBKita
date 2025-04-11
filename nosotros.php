@@ -120,7 +120,7 @@
 					<h3 class="titulo-seccion text-center">KITA</h3>
 					<p>Representan naturaleza, frescura, tierra. buscamos resaltar la naturaleza por los productos orgánicos y cuidado del ambiente.</p><br>
 					<p>
-						<span style="color: #000000">“Kita es una mara innovadora. A nivel mundial los jabones naturales han tomado auge, las personas se están preocupando más por el cuidado de su salud, la formulación incluye ingredientes suavizantes, exfoliantes e hidratantes que no irritan la piel, son antioxidantes y contribuyen a darle mayor elasticidad, humedad y frescura, en comparación a los jabones comerciales, por tanto, la demanda de productos que demuestren propiedades benéficas para la piel está aumentando.”. </span>
+						<span style="color: #000000">“Kita es una marca innovadora. A nivel mundial los jabones naturales han tomado auge, las personas se están preocupando más por el cuidado de su salud, la formulación incluye ingredientes suavizantes, exfoliantes e hidratantes que no irritan la piel, son antioxidantes y contribuyen a darle mayor elasticidad, humedad y frescura, en comparación a los jabones comerciales, por tanto, la demanda de productos que demuestren propiedades benéficas para la piel está aumentando.”. </span>
 					</p>
 
 					<p>
@@ -140,7 +140,7 @@
 			<div class="Mision">
 				<h3 class="titulo-seccion">Mision</h3>
 				<p>
-					La mission de <strong>KITA</strong> es brindar productos de higiene personal elaborados con ingredientes naturales y sostenibles, ofreciendo una alternativa saludable que contribuya al bienestar de las personas y al cuidado del medio ambiente.
+					La misión de <strong>KITA</strong> es brindar productos de higiene personal elaborados con ingredientes naturales y sostenibles, ofreciendo una alternativa saludable que contribuya al bienestar de las personas y al cuidado del medio ambiente.
 				</p><br>
 
 				<div Class="Vision">

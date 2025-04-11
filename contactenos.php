@@ -100,79 +100,71 @@
 
     <!--CONTENIDO DE LA PÁGINA-->
 
-    <section class="container">
-        <div class="row">
-            <div class="col-md-12 text-left">
-                <h1 class="con_tit">
-                    <p>Contáctanos</p>
-                </h1>
-            </div>
-        </div>
-    </section>
-
     <!-- Contacto -->
-    <div id="contact" class="section">
-        <!-- container -->
-        <div class="container">
-            <div class="section-header text-left">
-                <p align="left">Ponte en contacto con nosotros para más información:</p>
-            </div>
+     <br>
+<div id="contact" class="section">
+    <!-- container -->
+    <div class="container">
+        <div class="section-header text-left">
+            <h4 align="left">Ponte en contacto con nosotros para más información:</h4>
         </div>
     </div>
+</div>
 
-    <section class="container">
-        <div class="row">
-            <!-- Formulario -->
-            <div class="col-md-6">
-                <form action="https://formspree.io/f/mnnpbzog" method="POST">
-                    <div class="form-group">
-                        <label for="Nombre_Completo">Nombre Completo</label>
-                        <input type="text" class="form-control" id="Nombre_Completo" name="nombre" placeholder="Introduce tu nombre completo" required>
-                    </div>
+<section class="container">
+   <div class="row">
+       <!-- Formulario -->
+       <div class="col-md-6">
+           <form action="https://formspree.io/f/mnnpbzog" method="POST">
+               <div class="form-group">
+                   <label for="Nombre_Completo">Nombre Completo</label>
+                   <input type="text" class="form-control" id="Nombre_Completo" name="nombre" placeholder="Introduce tu nombre completo" required>
+               </div>
 
-                    <div class="form-group">
-                        <label for="telefono">Teléfono</label>
-                        <input type="text" class="form-control" id="telefono" name="telefono" placeholder="Introduce tu teléfono">
-                    </div>
+               <div class="form-group">
+                   <label for="telefono">Teléfono</label>
+                   <input type="text" class="form-control" id="telefono" name="telefono" placeholder="Introduce tu teléfono">
+               </div>
 
-                    <div class="form-group">
-                        <label for="email">Correo</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Introduce tu correo" required>
-                    </div>
+               <div class="form-group">
+                   <label for="email">Correo</label>
+                   <input type="email" class="form-control" id="email" name="email" placeholder="Introduce tu correo" required>
+               </div>
 
-                    <div class="form-group">
-                        <label for="asunto">Asunto</label>
-                        <input type="text" class="form-control" id="asunto" name="asunto" placeholder="Introduce el asunto">
-                    </div>
+               <div class="form-group">
+                   <label for="asunto">Asunto</label>
+                   <input type="text" class="form-control" id="asunto" name="asunto" placeholder="Introduce el asunto">
+               </div>
 
-                    <div class="form-group">
-                        <label for="mensaje">Mensaje</label>
-                        <textarea class="form-control" id="mensaje" name="mensaje" rows="3" placeholder="Escribe tu mensaje aquí" required></textarea>
-                    </div>
+               <div class="form-group">
+                   <label for="mensaje">Mensaje</label>
+                   <textarea class="form-control" id="mensaje" name="mensaje" rows="3" placeholder="Escribe tu mensaje aquí" required></textarea>
+               </div>
 
-                    <button type="submit" class="btn btn-primary">Enviar</button>
-                </form>
-            </div>
+               <button type="submit" class="btn btn-primary">Enviar</button>
+           </form>
+       </div>
 
-            <!-- Información y imagen a la derecha -->
-            <div class="col-md-6 text-right d-flex flex-column align-items-end">
-                <div class="con_box mb-3">
-                    <h3>Casa Matriz KITA</h3>
-                    <p>Contiguo a PriceSmart</p>
-                    <h4>Horarios de Atención</h4>
-                    <p><strong>Lunes a Viernes:</strong><br> 8:00 a.m. – 5:45 p.m.<br><strong>Sábados:</strong><br> 9:00 a.m. – 1:00 p.m.</p>
-                    <h4>Teléfono</h4>
-                    <p>(505) 2222 4444</p>
-                </div>
+       <!-- Información y imagen a la derecha -->
+       <div class="col-md-6 text-right d-flex flex-column align-items-end">
+           <div class="con_box mb-3">
+               <h3>Casa Matriz KITA</h3>
+               <p>Semáforos de Villa Fontana</p>
+               <h4>Horarios de Atención</h4>
+               <p><strong>Lunes a Viernes:</strong><br> 8:00 a.m. – 5:45 p.m.<br><strong>Sábados:</strong><br> 9:00 a.m. – 1:00 p.m.</p>
+               <h4>Teléfono</h4>
+               <p>(+505) 2234-5678</p>
+           </div>
 
-                <div class="img-rounded">
-                    <img src="img/contact.png" alt="Imagen de contacto" width="90" height="110">
-                </div>
-            </div>
-        </div>
-        <br><br>
-    </section>
-    <!-- /Contacto -->
+           <div class="img-rounded">
+               <img src="img/contact.png" alt="Imagen de contacto" width="90" height="110">
+           </div>
+       </div>
+   </div>
+</section>
+
+
+<!-- /Contacto -->
     <!--FIN DEL CONTENIDO DE LA PÁGINA-->
 
     <!-- INICIO PIE DE PÁGINA -->
