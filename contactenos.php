@@ -115,7 +115,7 @@
    <div class="row">
        <!-- Formulario -->
        <div class="col-md-6">
-           <form action="https://formspree.io/f/mnnpbzog" method="POST">
+           <form action="https://formspree.io/f/xldjpqjd" method="POST">
                <div class="form-group">
                    <label for="Nombre_Completo">Nombre Completo</label>
                    <input type="text" class="form-control" id="Nombre_Completo" name="nombre" placeholder="Introduce tu nombre completo" required>
