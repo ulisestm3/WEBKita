@@ -153,7 +153,7 @@
                <h4>Horarios de Atención</h4>
                <p><strong>Lunes a Viernes:</strong><br> 8:00 a.m. – 5:45 p.m.<br><strong>Sábados:</strong><br> 9:00 a.m. – 1:00 p.m.</p>
                <h4>Teléfono</h4>
-               <p>(+505) 2234-5678</p>
+               <p>(+505) 2276-7289</p>
            </div>
 
            <div class="img-rounded">
@@ -192,7 +192,7 @@
                         <h4>Datos de Contacto</h4>
                         <address>
                             Dirección: Semáforos de Villa Fontana<br>
-                            Teléfono: (+505) 2234-5678<br>
+                            Teléfono: (+505) 2276-7289<br>
                             E-mail: <a href="mailto:ventas.jabonkita@gmail.com">ventas.jabonkita@gmail.com</a><br>
                             Horario de atención: 8:00 a.m - 5:00 p.m<br>
                             Facebook ׀ Twitter
