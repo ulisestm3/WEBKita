@@ -64,7 +64,7 @@
 
 		<div class="carousel-inner" role="listbox">
 			<div class="item active">
-				<img src="img/pic.jpg" alt="First slide image" class="d-block w-100">
+				<img src="img/moodboard2.png" alt="First slide image" class="d-block w-100">
 				<div class="carousel-caption">
 					<h3></h3>
 					<p></p>
@@ -72,7 +72,7 @@
 			</div>
 
 			<div class="item">
-				<img src="img/pic1.jpg" alt="Second slide image" class="d-block w-100">
+				<img src="img/moodboard3.png" alt="Second slide image" class="d-block w-100">
 				<div class="carousel-caption">
 					<h3></h3>
 					<p></p>
@@ -104,7 +104,7 @@
 
 		<div class="container">
 			<div class="col-md-12 text-center">
-				<img src="img/Logo.jpg" alt="Logo" class="img-responsive center-block">
+				<img src="img/Logo_Sin_Fondo.png" alt="Logo" class="img-responsive center-block">
 			</div>
 
 
@@ -190,7 +190,7 @@
 						<h4>Datos de Contacto</h4>
 						<address>
 							Dirección: Semáforos de Villa Fontana<br>
-							Teléfono: (+505) 2234-5678<br>
+							Teléfono: (+505) 2276-7289<br>
 							E-mail: <a href="mailto:ventas.jabonkita@gmail.com">ventas.jabonkita@gmail.com</a><br>
 							Horario de atención: 8:00 a.m - 5:00 p.m<br>
 							Facebook ׀ Twitter
